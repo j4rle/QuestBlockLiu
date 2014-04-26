@@ -19,8 +19,6 @@ public class MenuState extends GameState{
 	};
 
 	private Background bg;
-	private Color titleColor;
-	private Font titleFont;
 	private Font font;
 	private boolean help;
 
@@ -28,10 +26,6 @@ public class MenuState extends GameState{
 		this.gsm = gsm;
 		bg = new Background("/background.png", 0.1);
 		bg.setVector(-0.3,0);
-
-
-		titleColor = new Color(0,128,0);
-		titleFont = new Font("Century Gothic", Font.PLAIN, 56);
 
 		font = new Font("Century Gothic", Font.PLAIN, 24);
 	}

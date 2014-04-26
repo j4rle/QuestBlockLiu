@@ -46,6 +46,7 @@ public class Level1State extends GameState {
 
 	public void update() {
 		player.update();
+		tileMap.setFPS(GamePanel.FPS);
 		if(player.getX() < xmax || player.getX() > xmin){
 			tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));}
 		if(player.getY() > GamePanel.HEIGHT / 2 && player.getY() != 0) {
@@ -58,6 +59,7 @@ public class Level1State extends GameState {
 		bg.draw(g);
 		tileMap.draw(g);
 		player.draw(g);
+
 	}
 
 	public void keyPressed(int key) {
@@ -76,6 +78,9 @@ public class Level1State extends GameState {
 		if(key == KeyEvent.VK_ESCAPE){
 			wasPaused = true; //this allows us to "save" the current state of the game
 			gsm.setGameState(GameStateManager.MENUSTATE);
+		}
+		if(key == KeyEvent.VK_F){
+			tileMap.setShowFPS(!tileMap.ShowFPS());
 		}
 	}
 

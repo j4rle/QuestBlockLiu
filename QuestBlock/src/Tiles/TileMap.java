@@ -17,6 +17,9 @@ public class TileMap {
 	private int ymax;
 	private int height;
 	private int width;
+	private int FPS;
+	private Font font;
+	private boolean showFPS;
 
 	private int tileSize;
 	private int[][] map;
@@ -27,6 +30,7 @@ public class TileMap {
 	public TileMap(String s, int tileSize){
 
 		this.tileSize = tileSize;
+		showFPS = true;
 
 		try{
 			BufferedReader br = new BufferedReader(new FileReader(s));
@@ -100,6 +104,14 @@ public class TileMap {
 		return tileSize;
 	}
 
+	public boolean ShowFPS() {
+		return showFPS;
+	}
+
+	public void setShowFPS(boolean b){
+		showFPS = b;
+	}
+
 	public void setX(int x) {
 		this.x = x;
 		fixBounds();
@@ -110,6 +122,10 @@ public class TileMap {
 		fixBounds();
 	}
 
+	public void setFPS(int FPS){
+		this.FPS = FPS;
+	}
+
 	private void fixBounds() { //keeps the camera locked inside the level
 		if(x<xmin) x = xmin;
 		if(y<ymin) y = ymin;
@@ -118,9 +134,11 @@ public class TileMap {
 	}
 
 	public void draw(Graphics2D g){
+
 		//iterate over rows and columns
 		Color block1Color = new Color(255,255,255,90);
 		Color outsideColor = new Color(87,87,87, 90);
+		font = new Font("Arial", Font.PLAIN, 10);
 
 		for (int row = 0; row < mapHeight; row++) {
 			for (int col = 0; col < mapWidth; col++) {
@@ -142,6 +160,13 @@ public class TileMap {
 				//tile border
 				g.setColor(Color.WHITE);
 				g.drawRect(x + col * tileSize, y + row * tileSize, tileSize,tileSize);
+
+				//FPS
+				if(showFPS) {
+					g.setFont(font);
+					g.setColor(Color.WHITE);
+					g.drawString("FPS: " + Integer.toString(FPS), 5, 10);
+				}
 			}
 		}
 	}

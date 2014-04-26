@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private BufferedImage image;
 	private Graphics2D g;
 
-	private int FPS = 0;
+	public static int FPS = 0;
 
 	private GameStateManager gsm;
 
@@ -29,6 +29,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		requestFocus();
 	}
 
+	public int getFPS() {
+		return FPS;
+	}
 
 	public void addNotify() {
 		super.addNotify();
@@ -71,7 +74,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 			if(System.currentTimeMillis() - lastTimer >= 1000){
 				FPS = frames;
-				System.out.println(FPS);
 
 				lastTimer += 1000;
 				frames = 0;
@@ -101,12 +103,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private void draw(){
 		Graphics g2 = getGraphics();
 		g2.drawImage(image, 0, 0, null);
-		g2.dispose();
-	}
-	public void clear(){
-		Graphics g2 = getGraphics();
-		g2.fillRect(0,0,400,400);
-		g2.setColor(Color.black);
 		g2.dispose();
 	}
 
