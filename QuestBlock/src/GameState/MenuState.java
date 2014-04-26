@@ -43,6 +43,8 @@ public class MenuState extends GameState{
 
 		//Menu options
 		g.setFont(font);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		for (int i = 0; i < options.length; i++) {
 			if(i == currentChoice){
 				g.setColor(Color.white);

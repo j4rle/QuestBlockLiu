@@ -163,6 +163,8 @@ public class TileMap {
 
 				//FPS
 				if(showFPS) {
+					g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+					g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 					g.setFont(font);
 					g.setColor(Color.WHITE);
 					g.drawString("FPS: " + Integer.toString(FPS), 5, 10);
