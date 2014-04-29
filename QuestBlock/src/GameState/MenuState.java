@@ -25,12 +25,13 @@ public class MenuState extends GameState{
 	public MenuState(GameStateManager gsm) {
 		this.gsm = gsm;
 		bg = new Background("/background.png", 0.1);
-		bg.setVector(-0.3,0);
+		init();
 
-		font = new Font("Century Gothic", Font.PLAIN, 24);
 	}
 
 	public void init() {
+		bg.setVector(-0.3,0);
+		font = new Font("Century Gothic", Font.PLAIN, 24);
 	}
 
 	public void update() {

@@ -5,6 +5,7 @@ import Game.GamePanel;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 
 public class TileMap {
 
@@ -33,7 +34,7 @@ public class TileMap {
 		showFPS = true;
 
 		try{
-			BufferedReader br = new BufferedReader(new FileReader(s));
+			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
 
 			mapWidth = Integer.parseInt(br.readLine()); //reads first line
 			mapHeight = Integer.parseInt(br.readLine()); //reads second line

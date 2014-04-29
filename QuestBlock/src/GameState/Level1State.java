@@ -16,7 +16,7 @@ public class Level1State extends GameState {
 	private int ymax;
 	private int xmin;
 	private int ymin;
-	private boolean wasPaused = false;
+	public boolean wasPaused = false;
 	private int tileSize;
 	private int playerSize;
 	private Background bg;
@@ -31,7 +31,7 @@ public class Level1State extends GameState {
 			bg = new Background("/lvl1background.png", 0);
 			this.tileSize = GamePanel.HEIGHT / 12;
 			this.playerSize = tileSize - 15;
-			tileMap = new TileMap("testmap.txt", 40);
+			tileMap = new TileMap("/level1.txt", 40);
 			player = new Player(tileMap, playerSize);
 			player.setX(55);
 			player.setY(55);
@@ -69,7 +69,7 @@ public class Level1State extends GameState {
 		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT){
 			player.setRight(true);
 		}
-		if(key == KeyEvent.VK_W || key == KeyEvent.VK_SPACE){
+		if(key == KeyEvent.VK_W || key == KeyEvent.VK_SPACE || key == KeyEvent.VK_UP){
 			player.setJumping(true);
 		}
 		if(key == KeyEvent.VK_W){

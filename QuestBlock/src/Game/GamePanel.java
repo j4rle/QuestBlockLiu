@@ -29,10 +29,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		requestFocus();
 	}
 
-	public int getFPS() {
-		return FPS;
-	}
-
 	public void addNotify() {
 		super.addNotify();
 		if (thread == null) {
@@ -52,13 +48,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
+		boolean shouldRender = false;
 
 		while (running) {
 
 			long now = System.nanoTime();
 			delta += (now - lastTime) / nsPerTick;
 			lastTime = now;
-			boolean shouldRender = false;
+			shouldRender = false;
 
 			while(delta >= 1){
 				update();
