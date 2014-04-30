@@ -69,7 +69,9 @@ public class Player extends Movable {
 		int rightTile = tileMap.getColTile(((int) (x + width / 2)) - 1);
 		int topTile = tileMap.getRowTile((int)(y - height / 2));
 		int bottomTile = tileMap.getRowTile((int)(y + height / 2) - 1);
+
 		int[] blocked = {0,2}; //blocks that will block movement
+
 		topLeft = (tileMap.getTile(topTile, leftTile) == blocked[0]) ||
 				(tileMap.getTile(topTile, leftTile) == blocked[1]);
 
@@ -213,8 +215,6 @@ public class Player extends Movable {
 		}
 		x = tempX;
 		y = tempY;
-
-		//moves the camera
 
 
 	}

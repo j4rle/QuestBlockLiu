@@ -1,0 +1,17 @@
+To do:
+
+-byta representationen av tiles til enum
+-ny level(level2):
+	ny state:
+		"levelSelect"
+	ny lvl2.txt
+	nya blocks?
+	ny background
+
+-dokumentation:
+	3<= designmönster
+	3<= typiska egenskaper hos OO-språk
+		inheritance
+	designbeslut; hög designnivå
+		gameState
+	4 UML-diagram från interessanta aspekt

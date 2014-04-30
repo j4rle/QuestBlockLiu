@@ -46,6 +46,7 @@ public class Level1State extends GameState {
 
 	public void update() {
 		player.update();
+
 		tileMap.setFPS(GamePanel.FPS);
 		if(player.getX() < xmax || player.getX() > xmin){
 			tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));}
@@ -72,7 +73,7 @@ public class Level1State extends GameState {
 		if(key == KeyEvent.VK_W || key == KeyEvent.VK_SPACE || key == KeyEvent.VK_UP){
 			player.setJumping(true);
 		}
-		if(key == KeyEvent.VK_W){
+		if(key == KeyEvent.VK_SHIFT){
 			player.setSprint(true);
 		}
 		if(key == KeyEvent.VK_ESCAPE){
