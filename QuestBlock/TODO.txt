@@ -1,10 +1,8 @@
 To do:
 
--byta representationen av tiles til enum
+-byta representationen av tiles från int-array til enum(?)
+
 -ny level(level2):
-	ny state:
-		"levelSelect"
-	ny lvl2.txt
 	nya blocks?
 	ny background
 

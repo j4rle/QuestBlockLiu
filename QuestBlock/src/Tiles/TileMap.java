@@ -6,6 +6,8 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class TileMap {
 
@@ -19,18 +21,30 @@ public class TileMap {
 	private int height;
 	private int width;
 	private int FPS;
+    private double randomizeChanges;
+    private double randomizeInterval;
 	private Font font;
 	private boolean showFPS;
 
+    //for randomized map
+    private double playerX;
+    private double playerY;
+    private boolean randomized;
+    private boolean newRandomize;
+    private int randomizeCounter;
+
 	private int tileSize;
 	private int[][] map;
-	private int mapWidth; //width of the map as read from the mapfile
-	private int mapHeight; //height of the map as read from the mapfile
+	private int mapWidth; //width of the map as read from the map file
+	private int mapHeight; //height of the map as read from the map file
+    private int[] tileTypes;
 
 
 	public TileMap(String s, int tileSize){
 
 		this.tileSize = tileSize;
+        this.randomized = false;
+        this.tileTypes = new int[]{1,2};
 		showFPS = true;
 
 		try{
@@ -123,9 +137,21 @@ public class TileMap {
 		fixBounds();
 	}
 
-	public void setFPS(int FPS){
+    public void setPlayer(double playerX, double playerY) {
+        this.playerX = playerX;
+        this.playerY = playerY;
+    }
+
+
+    public void setFPS(int FPS){
 		this.FPS = FPS;
 	}
+
+    public void setRandomized(boolean b, double interval, double changes){
+        this.randomizeInterval = interval;
+        this.randomizeChanges = changes;
+        randomized = b;
+    }
 
 	private void fixBounds() { //keeps the camera locked inside the level
 		if(x<xmin) x = xmin;
@@ -133,6 +159,30 @@ public class TileMap {
 		if(x>xmax) x = xmax;
 		if(y>ymax) y = ymax;
 	}
+
+    private void randomize(){
+        newRandomize = (randomizeCounter >= randomizeInterval);
+        if(newRandomize) {
+            Random rnd = new Random();
+
+            for (int i = 0; i < randomizeChanges; i++) {
+                int rndX = rnd.nextInt(mapWidth-2)+1;
+                int rndY = rnd.nextInt(mapHeight-2)+1;
+                int rndTile = rnd.nextInt(tileTypes.length);
+                map[rndY][rndX] = rndTile;
+            }
+            randomizeCounter = 0;
+        }
+        else{
+            randomizeCounter++;
+        }
+    }
+
+    public void update(){
+        if(randomized) {
+            randomize();
+        }
+    }
 
 	public void draw(Graphics2D g){
 
@@ -144,16 +194,16 @@ public class TileMap {
 		for (int row = 0; row < mapHeight; row++) {
 			for (int col = 0; col < mapWidth; col++) {
 
-				int rc = map[row][col]; //currentpos
+				int rc = map[row][col]; //current position
 
 				if(rc == 0){
-					g.setColor(block1Color);
+					g.setColor(block1Color); //this is a type 1 tile
 				}
 				if(rc ==1){ //no tile to be drawn
 					continue;
 				}
 				if(rc == 2){
-					g.setColor(outsideColor);
+					g.setColor(outsideColor); //border surrounding map
 				}
 
 				//tile

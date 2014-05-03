@@ -45,6 +45,11 @@
           <option name="CHECK_TRY_CATCH_SECTION" value="true" />
           <option name="CHECK_METHOD_BODY" value="true" />
         </inspection_tool>
+        <inspection_tool class="SpellCheckingInspection" enabled="true" level="TYPO" enabled_by_default="true">
+          <option name="processCode" value="false" />
+          <option name="processLiterals" value="false" />
+          <option name="processComments" value="true" />
+        </inspection_tool>
       </profile>
     </profiles>
     <option name="PROJECT_PROFILE" value="Project Default" />
@@ -172,30 +177,8 @@
       </item>
     </group>
   </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-          <State>
-            <id>General</id>
-          </State>
-          <State>
-            <id>XPath</id>
-          </State>
-          <State>
-            <id>XSLT</id>
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>General</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
+  <component name="ProjectDictionaryState">
+    <dictionary name="Jarle" />
   </component>
   <component name="ProjectModuleManager">
     <modules>

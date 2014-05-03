@@ -21,6 +21,7 @@ public abstract class Movable {
 	protected boolean falling;
 	protected boolean sprinting;
 	protected boolean sliding;
+	protected boolean flying;
 
 	protected double moveSpeed;
 	protected double maxSpeed;
@@ -28,6 +29,7 @@ public abstract class Movable {
 	protected double stopSpeed;
 	protected double jumpStart;
 	protected double gravity;
+    protected double slidingSpeed;
 
 	protected TileMap tileMap;
 
@@ -36,7 +38,7 @@ public abstract class Movable {
 	protected boolean bottomLeft;
 	protected boolean bottomRight;
 
-	public abstract void update();
-	public abstract void draw(Graphics2D g);
-
+    public abstract void calculateCorners(double x, double y);
+    public abstract void update();
+    public abstract void draw(Graphics2D g);
 }

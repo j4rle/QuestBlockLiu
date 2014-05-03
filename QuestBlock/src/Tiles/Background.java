@@ -10,29 +10,27 @@ import java.awt.image.BufferedImage;
 public class Background {
 
 	private BufferedImage image;
-	private double moveScale;
 
 	private double x;
 	private double y;
 	private double dx;
 	private double dy;
 
-	public Background(String s, double ms){
+	public Background(String s){
 		try{
 			image = ImageIO.read(getClass().getResourceAsStream(s)
 			);
-			this.moveScale = ms;
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 	}
 
-	public void draw(Graphics2D g){ //Draws background based on which direction the player is moving.
+	public void draw(Graphics2D g){ //Draws background.
 		g.drawImage(image, (int)x,(int)y,null);
 		if(x < 0){
 			g.drawImage(image, (int)x + GamePanel.WIDTH, (int)y,null);
 		}
-		if(x>0){
+		if(x > 0){
 			g.drawImage(image,(int)x-GamePanel.WIDTH,(int)y,null);
 		}
 	}

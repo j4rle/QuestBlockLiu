@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
-		boolean shouldRender = false;
+		boolean shouldRender;
 
 		while (running) {
 

@@ -7,18 +7,22 @@ import java.awt.*;
 public class Player extends Movable {
 
 	public Player(TileMap tm, int size) {
-		tileMap = tm;
-		playerColor = new Color(255,0,0,90);
+        //player properties
+		this.tileMap = tm;
+		this.playerColor = new Color(255,0,0,90);
 
+        //size
 		this.width = size;
 		this.height = size;
 
-		moveSpeed = 0.5;
-		maxSpeed = 5.1;
-		maxFallingSpeed = 6;
-		stopSpeed = 0.40;
-		jumpStart = -8.0;
-		gravity = 0.30;
+        //movement
+		this.moveSpeed = 0.5;
+        this.maxSpeed = 5.1;
+        this.maxFallingSpeed = 100;
+        this.stopSpeed = 0.40;
+        this.jumpStart = -8.0;
+        this.gravity = 0.30;
+        this.slidingSpeed = 3.5;
 
 	}
 
@@ -38,16 +42,26 @@ public class Player extends Movable {
 		this.y = y;
 	}
 
+    public void setSlidingSpeed(double x){
+        slidingSpeed = x;
+    }
+
 	public void setLeft(boolean b){
 		left = b;
 	}
 
 	public void setRight(boolean b){
 		right = b;
+
+	}
+	public void setFlying(boolean b){
+		flying = b;
 	}
 
 	public void setJumping(boolean b){
 		double nextX;
+
+        checkSliding();
 		if(dx > 0){
 			nextX = x + 5;
 		}
@@ -63,6 +77,27 @@ public class Player extends Movable {
 	public void setSprint(boolean b){
 		sprinting = b;
 	}
+
+    public void checkSliding(){
+        if(!flying){
+            if(dx > 0) {
+                calculateCorners(x + 10, y);
+                sliding = (topRight || topLeft || bottomRight || bottomLeft);
+            }
+            else if(dx < 0) {
+                calculateCorners(x - 10, y);
+                sliding = (topRight || topLeft || bottomRight || bottomLeft);
+            }
+            else {
+                calculateCorners(x + 10, y);
+                sliding = (topRight || topLeft);
+                if(!sliding){
+                    calculateCorners(x - 10, y);
+                    sliding = (topRight || topLeft);
+                }
+            }
+        }
+    }
 
 	public void calculateCorners(double x, double y){ //rectangular hit-detection
 		int leftTile = tileMap.getColTile((int) x - width / 2);
@@ -87,11 +122,19 @@ public class Player extends Movable {
 	}
 
 	public void update(){
+        if(sprinting){
+            maxSpeed = 10;
+            moveSpeed = 0.6;
+        }
+        if(!sprinting){
+            maxSpeed = 5.1;
+            moveSpeed = 0.5;
+        }
 		if(sliding){
-			maxFallingSpeed = 3;
+			maxFallingSpeed = slidingSpeed;
 		}
 		else{
-			maxFallingSpeed = 6;
+			maxFallingSpeed = 100;
 		}
 		//calculate next position
 		if(left){//accelerates/moves left
@@ -128,6 +171,7 @@ public class Player extends Movable {
 		}
 
 		if(falling){ //mid jump or if falling down
+            checkSliding();
 			dy += gravity;
 			if(dy > maxFallingSpeed){
 				dy = maxFallingSpeed;
@@ -137,20 +181,6 @@ public class Player extends Movable {
 			dy = 0;
 		}
 
-		//slide detection
-		calculateCorners(x+5, y);
-		if(topRight || topLeft){
-			sliding = true;
-		}
-		else{
-			calculateCorners(x-5,y);
-			if(topLeft || topRight){
-				sliding = true;
-			}
-			else{
-				sliding = false;
-			}
-		}
 
 		//collision detection
 
@@ -225,9 +255,9 @@ public class Player extends Movable {
 		int ty = tileMap.getY();
 
 		g.setColor(playerColor);
-		g.fillRect((int) (tx + x - width / 2), (int) (ty + y - height / 2), width, height);
+		g.fillRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3);
 		g.setColor(Color.WHITE);
-		g.drawRect((int) (tx + x - width / 2), (int) (ty + y - height / 2), width, height);
+		g.drawRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3);
 	}
 
 }
