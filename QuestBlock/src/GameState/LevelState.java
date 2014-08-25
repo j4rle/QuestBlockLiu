@@ -61,7 +61,7 @@ public class LevelState extends GameState{
         }
         if(key == KeyEvent.VK_ESCAPE){
             gsm.setPaused(gsm.getGameState()); //this allows us to "save" the current state of the game
-            gsm.setGameState(1); //Pause screen
+            gsm.setGameState(GameStateManager.PAUSESTATE); //Pause screen
         }
         if(key == KeyEvent.VK_F){
             tileMap.setShowFPS(!tileMap.ShowFPS());
