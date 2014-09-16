@@ -1,61 +1,60 @@
-package Menus;
+package menus;
 
-import Game.GamePanel;
-import GameState.GameStateManager;
-import GameState.MenuState;
-import Tiles.Background;
+import gamestate.GameStateControl;
+import gamestate.MenuState;
+import tiles.Background;
 
 import java.awt.*;
 
+@SuppressWarnings({"RefusedBequest", "HardcodedFileSeparator"})
+//magic numbers used as the game doesn't scale with monitor size.
+//Overriding methods in superclass is intentional
+//File.separator doesn't work for getResourceAsStream.
+
+
+/**
+ * The menu for selecting level
+ */
 public class LevelSelectMenu extends MenuState {
 
-    public LevelSelectMenu(GameStateManager gsm) {
-        this.gsm = gsm;
+    /**
+     *
+     * @param gsc game state control for the menu
+     */
+    public LevelSelectMenu(GameStateControl gsc) {
+        super(gsc);
         init();
     }
 
+    @Override
     public void init(){
+        final int fontsize = 24;
         this.currentChoice = 0;
-        bg = new Background("/lvl1background.png");
-        this.font = new Font("Century Gothic", Font.PLAIN, 24);
+        background = new Background("/lvl1background.png");
+        this.font = new Font("Century Gothic", Font.PLAIN, fontsize);
         this.options = new String[] {"Level 1","Level 2","Randomizer","Main Menu"};
     }
 
+    @Override
     public void update() {
-        bg.update();
+        background.update();
     }
 
-    public void draw(Graphics2D g) {
-        //Background
-        bg.draw(g);
 
-        //Menu options
-        g.setFont(font);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        for (int i = 0; i < options.length; i++) {
-            if(i == currentChoice){
-                g.setColor(Color.white);
-            }
-            else{
-                g.setColor(Color.GRAY);
-            }
-            g.drawString(options[i], 50, GamePanel.HEIGHT - 100 + i * 30);
-        }
-    }
 
+    @Override
     public void select() {
         if(currentChoice == 0){
-            gsm.setGameState(GameStateManager.LEVEL1STATE);
+            gameStateControl.setGameState(GameStateControl.LEVEL1STATE);
         }
         if(currentChoice == 1){
-            gsm.setGameState(GameStateManager.LEVEL2STATE);
+            gameStateControl.setGameState(GameStateControl.LEVEL2STATE);
         }
         if(currentChoice == 2){
-            gsm.setGameState(GameStateManager.RANDOMIZERSTATE);
+            gameStateControl.setGameState(GameStateControl.RANDOMIZERSTATE);
         }
         if(currentChoice == 3){
-            gsm.setGameState(GameStateManager.MAINMENUSTATE);
+            gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
         }
     }
 

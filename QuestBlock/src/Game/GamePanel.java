@@ -1,117 +1,48 @@
-package Game;
+package game;
 
-import GameState.GameStateManager;
+import gamestate.GameStateControl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener{
+/**
+ * The panel where the game is drawn
+ *
+ */
+public class GamePanel extends JPanel{
+
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = 480;
-
-	private Thread thread;
-	private boolean running;
 
 	private BufferedImage image;
 	private Graphics2D g;
 
-	public static int FPS = 0;
-
-	private GameStateManager gsm;
-
 	public GamePanel() {
-		super();
-		setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
 		requestFocus();
+        this.image = null;
+        this.g = null;
+        init();
 	}
 
-	public void addNotify() {
-		super.addNotify();
-		if (thread == null) {
-			thread = new Thread(this);
-			thread.start();
-		}
-		addKeyListener(this);
-	}
-
-	public void run() {
-
-		init();
-
-		long lastTime = System.nanoTime();
-		double nsPerTick = 1000000000D / 60D;
-		int frames = 0;
-
-		long lastTimer = System.currentTimeMillis();
-		double delta = 0;
-		boolean shouldRender;
-
-		while (running) {
-
-			long now = System.nanoTime();
-			delta += (now - lastTime) / nsPerTick;
-			lastTime = now;
-			shouldRender = false;
-
-			while(delta >= 1){
-				update();
-				delta -= 1;
-				shouldRender = true;
-			}
-
-			if(shouldRender){
-				frames++;
-				render();
-				draw();
-			}
-
-			if(System.currentTimeMillis() - lastTimer >= 1000){
-				FPS = frames;
-
-				lastTimer += 1000;
-				frames = 0;
-			}
-
-		}
+    public void init(){
+		this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		this.g = (Graphics2D) image.getGraphics();
+        GameEngine gameEngine = new GameEngine(this);
+        addKeyListener(gameEngine);
 	}
 
 
-	public void init(){
-
-		running = true;
-
-		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		g = (Graphics2D) image.getGraphics();
-		gsm = new GameStateManager();
+	public void render(GameStateControl gameStateControl){
+		gameStateControl.draw(g);
 	}
 
-	private void update(){
-		gsm.update();
-	}
-
-	private void render(){
-		gsm.draw(g);
-	}
-
-	private void draw(){
+	public void draw(){
 		Graphics g2 = getGraphics();
-		g2.drawImage(image, 0, 0, null);
+		g2.drawImage(this.image, 0, 0, null);
 		g2.dispose();
-	}
-
-	public void keyTyped(KeyEvent key){
-
-	}
-
-	public void keyPressed(KeyEvent e) {
-		gsm.keyPressed(e.getKeyCode());
-	}
-	public void keyReleased(KeyEvent e) {
-		gsm.keyReleased(e.getKeyCode());
 	}
 
 

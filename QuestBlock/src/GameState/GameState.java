@@ -1,9 +1,12 @@
-package GameState;
+package gamestate;
 
 import java.awt.*;
 
-public abstract class GameState {
-	protected GameStateManager gsm;
+/**
+ * The abstract class for every GameState
+ * Passes through graphics and key presses
+ */
+public interface GameState {
 
 	public abstract void init();
 	public abstract void update();

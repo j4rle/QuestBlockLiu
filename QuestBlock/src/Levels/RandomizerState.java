@@ -1,32 +1,42 @@
-package Levels;
+package levels;
 
-import Entities.Player;
-import Game.GamePanel;
-import GameState.GameStateManager;
-import Tiles.Background;
-import Tiles.TileMap;
-import GameState.LevelState;
+import entities.Player;
+import game.GamePanel;
+import gamestate.GameStateControl;
+import tiles.Background;
+import tiles.TileMap;
+import gamestate.LevelState;
 
+@SuppressWarnings({"RefusedBequest", "HardcodedFileSeparator"})
+/**
+ * A randomized level
+ */
 public class RandomizerState extends LevelState {
 
-    public RandomizerState(GameStateManager gsm) {
-        this.gsm = gsm;
+
+    /**
+     *
+     * @param gsc game state control for the level
+     */
+    public RandomizerState(GameStateControl gsc) {
+        super(gsc);
         init();
     }
 
+    @Override
     public void init() {
-        if(gsm.getPaused() != GameStateManager.RANDOMIZERSTATE) {
+        if(gameStateControl.getPaused() != GameStateControl.RANDOMIZERSTATE) {
             //map design
-            this.bg = new Background("/lvl1background.png");
-            this.tileSize = GamePanel.HEIGHT / 12;
-            this.tileMap = new TileMap("/level2.txt", 40);
-            this.tileMap.setRandomized(true, 1, 10);
+            this.background = new Background("/lvl1background.png");
+            this.tileSize = GamePanel.HEIGHT / TILE_SCALE;
+            this.tileMap = new TileMap("/level2.txt", tileSize);
+            this.tileMap.setRandomized(true, 1, 100);
 
             //player properties
-            this.playerSize = tileSize - 15;
+            this.playerSize = tileSize - PLAYER_SIZE_OFFSET;
             this.player = new Player(tileMap, playerSize);
-            this.player.setX(55);
-            this.player.setY(55);
+            this.player.setX(START_X);
+            this.player.setY(START_Y);
             this.player.setFlying(true);
             this.player.setSlidingSpeed(5);
 
@@ -38,12 +48,11 @@ public class RandomizerState extends LevelState {
         }
     }
 
+    @Override
     public void update() {
         player.update();
-        tileMap.setPlayer(player.getX(),player.getY());
         tileMap.update();
 
-        tileMap.setFPS(GamePanel.FPS);
         if(player.getX() < xmax || player.getX() > xmin){
             tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));}
         if(player.getY() > GamePanel.HEIGHT / 2 && player.getY() != 0) {

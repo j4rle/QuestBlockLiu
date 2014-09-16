@@ -1,12 +1,18 @@
-package Game;
+package game;
 
 import javax.swing.*;
 
-public class Game{
+/**
+ * The main frame for the game
+ */
+public final class Game{
 
-	public static void main(String[] args) {
+    private Game() {
+    }
+
+    public static void main(String[] args) {
 		JFrame window = new JFrame("QuestBlock");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.setContentPane(new GamePanel());
 		window.setResizable(false);
 		window.setVisible(true);

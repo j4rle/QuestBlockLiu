@@ -1,12 +1,15 @@
-package Tiles;
+package tiles;
 
-import Game.GamePanel;
+import game.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-
+/**
+ * Creates a background-object from a file
+ */
 public class Background {
 
 	private BufferedImage image;
@@ -17,12 +20,12 @@ public class Background {
 	private double dy;
 
 	public Background(String s){
+        this.image = null;
 		try{
-			image = ImageIO.read(getClass().getResourceAsStream(s)
-			);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+			this.image = ImageIO.read(getClass().getResourceAsStream(s));
+		} catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	public void draw(Graphics2D g){ //Draws background.

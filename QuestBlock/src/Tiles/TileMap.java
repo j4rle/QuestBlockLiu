@@ -1,13 +1,18 @@
-package Tiles;
+package tiles;
 
-import Game.GamePanel;
+import game.GamePanel;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Random;
+
+/**
+ * The class responsible for reading maps from files.
+ */
+@SuppressWarnings("MagicNumber")
+//"magic numbers" are color codes.
 
 public class TileMap {
 
@@ -20,15 +25,10 @@ public class TileMap {
 	private int ymax;
 	private int height;
 	private int width;
-	private int FPS;
     private double randomizeChanges;
     private double randomizeInterval;
-	private Font font;
-	private boolean showFPS;
 
     //for randomized map
-    private double playerX;
-    private double playerY;
     private boolean randomized;
     private boolean newRandomize;
     private int randomizeCounter;
@@ -39,14 +39,17 @@ public class TileMap {
 	private int mapHeight; //height of the map as read from the map file
     private int[] tileTypes;
 
-
+    /**
+     *
+     * @param s file path for tilemap
+     * @param tileSize size of the tiles in the level
+     */
 	public TileMap(String s, int tileSize){
 
 		this.tileSize = tileSize;
         this.randomized = false;
         this.tileTypes = new int[]{1,2};
-		showFPS = true;
-
+        this.map = null;
 		try{
 			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
 
@@ -74,11 +77,10 @@ public class TileMap {
 					map[row][col] = Integer.parseInt(tokens[col]); //inserts the parsed int array into the correct column
 				}
 			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+		} catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public int getXmin() {
 		return xmin;
@@ -119,14 +121,6 @@ public class TileMap {
 		return tileSize;
 	}
 
-	public boolean ShowFPS() {
-		return showFPS;
-	}
-
-	public void setShowFPS(boolean b){
-		showFPS = b;
-	}
-
 	public void setX(int x) {
 		this.x = x;
 		fixBounds();
@@ -137,20 +131,11 @@ public class TileMap {
 		fixBounds();
 	}
 
-    public void setPlayer(double playerX, double playerY) {
-        this.playerX = playerX;
-        this.playerY = playerY;
-    }
 
-
-    public void setFPS(int FPS){
-		this.FPS = FPS;
-	}
-
-    public void setRandomized(boolean b, double interval, double changes){
+    public void setRandomized(boolean tempBool, double interval, double changes){
         this.randomizeInterval = interval;
         this.randomizeChanges = changes;
-        randomized = b;
+        randomized = tempBool;
     }
 
 	private void fixBounds() { //keeps the camera locked inside the level
@@ -189,7 +174,6 @@ public class TileMap {
 		//iterate over rows and columns
 		Color block1Color = new Color(255,255,255,90);
 		Color outsideColor = new Color(87,87,87, 90);
-		font = new Font("Arial", Font.PLAIN, 10);
 
 		for (int row = 0; row < mapHeight; row++) {
 			for (int col = 0; col < mapWidth; col++) {
@@ -200,7 +184,7 @@ public class TileMap {
 					g.setColor(block1Color); //this is a type 1 tile
 				}
 				if(rc ==1){ //no tile to be drawn
-					continue;
+                    continue;
 				}
 				if(rc == 2){
 					g.setColor(outsideColor); //border surrounding map
@@ -211,15 +195,6 @@ public class TileMap {
 				//tile border
 				g.setColor(Color.WHITE);
 				g.drawRect(x + col * tileSize, y + row * tileSize, tileSize,tileSize);
-
-				//FPS
-				if(showFPS) {
-					g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-					g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-					g.setFont(font);
-					g.setColor(Color.WHITE);
-					g.drawString("FPS: " + Integer.toString(FPS), 5, 10);
-				}
 			}
 		}
 	}

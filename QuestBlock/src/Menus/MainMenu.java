@@ -1,13 +1,22 @@
-package Menus;
+package menus;
 
 
-import Game.GamePanel;
-import GameState.GameStateManager;
-import GameState.MenuState;
-import Tiles.Background;
+import game.GamePanel;
+import gamestate.GameStateControl;
+import gamestate.MenuState;
+import tiles.Background;
 
 import java.awt.*;
 
+@SuppressWarnings({"RefusedBequest", "HardcodedFileSeparator"})
+//all "magic numbers" are explained through variable name
+//Overriding methods in superclass is intentional
+//File.separator doesn't work for getResourceAsStream.
+
+
+/**
+ * The main menu of the game
+ */
 public class MainMenu extends MenuState {
 
     private boolean help; //toggles help
@@ -15,27 +24,40 @@ public class MainMenu extends MenuState {
     //strings needed for main menu
 	private String[] helpText = {"Use A and D for movement","Use Space or W for jump", "- By Cian and Jarle"};
 
-
-	public MainMenu(GameStateManager gsm) {
-		this.gsm = gsm;
+    /**
+     *
+     * @param gsc game state control for the menu
+     */
+	public MainMenu(GameStateControl gsc) {
+		super(gsc);
 		init();
 	}
 
+    @Override
 	public void init() {
+        final int fontsize = 24;
+        final double backgroundSpeed = -0.3;
         this.currentChoice = 0;
         this.options = new String[] {"Start","Help","Quit"};
-        bg = new Background("/background.png");
-        bg.setVector(-0.3,0);
-		this.font = new Font("Century Gothic", Font.PLAIN, 24);
+        background = new Background("/background.png");
+        background.setVector(backgroundSpeed,0);
+		this.font = new Font("Century Gothic", Font.PLAIN, fontsize);
 	}
 
+
+
+    @Override
 	public void update() {
-		bg.update();
+		background.update();
 	}
 
+    @Override
 	public void draw(Graphics2D g) {
+        final int optionscoordinate = 50;
+        final int optionscale = 30;
+
 		//Background
-		bg.draw(g);
+		background.draw(g);
 
 		//Menu options
 		g.setFont(font);
@@ -48,22 +70,23 @@ public class MainMenu extends MenuState {
 			else{
 				g.setColor(Color.GRAY);
 			}
-			g.drawString(options[i], 50, GamePanel.HEIGHT - 100 + i * 30);
+			g.drawString(options[i], optionscoordinate, GamePanel.HEIGHT - 100 + i * optionscale);
 		}
 
 		//help instructions
 		if(help) {
 			for (int i = 0; i < helpText.length; i++) {
 				g.setColor(Color.white);
-				g.drawString(helpText[i], GamePanel.WIDTH/3,  GamePanel.HEIGHT - 100 + i * 30);
+				g.drawString(helpText[i], GamePanel.WIDTH/3,  GamePanel.HEIGHT - 100 + i * optionscale);
 			}
 		}
 	}
 
+    @Override
 	public void select() {
 		if(currentChoice == 0){
-            gsm.setPaused(GameStateManager.MAINMENUSTATE);
-			gsm.setGameState(GameStateManager.LEVELSELECT);
+            gameStateControl.setPaused(GameStateControl.MAINMENUSTATE);
+			gameStateControl.setGameState(GameStateControl.LEVELSELECT);
 		}
 		if(currentChoice == 1){
 			help = !help;
@@ -74,7 +97,4 @@ public class MainMenu extends MenuState {
 		}
 	}
 
-	public void keyReleased(int k) {
-
-	}
 }

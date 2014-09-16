@@ -1,9 +1,12 @@
-package Entities;
+package entities;
 
-import Tiles.TileMap;
+import tiles.TileMap;
 
 import java.awt.*;
 
+/**
+ * Abstract class for any movable entity in the game
+ */
 public abstract class Movable {
 
 	protected double x;
@@ -13,7 +16,7 @@ public abstract class Movable {
 
 	protected int width;
 	protected int height;
-	protected Color playerColor;
+	protected Color playerColor = null;
 
 	protected boolean left;
 	protected boolean right;
@@ -31,14 +34,13 @@ public abstract class Movable {
 	protected double gravity;
     protected double slidingSpeed;
 
-	protected TileMap tileMap;
+	protected TileMap tileMap = null;
 
 	protected boolean topLeft;
 	protected boolean topRight;
 	protected boolean bottomLeft;
 	protected boolean bottomRight;
 
-    public abstract void calculateCorners(double x, double y);
     public abstract void update();
     public abstract void draw(Graphics2D g);
 }

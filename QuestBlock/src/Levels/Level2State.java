@@ -1,32 +1,44 @@
-package Levels;
+package levels;
 
-import Entities.Player;
-import Game.GamePanel;
-import GameState.GameStateManager;
-import GameState.LevelState;
-import Tiles.Background;
-import Tiles.TileMap;
+import entities.Player;
+import game.GamePanel;
+import gamestate.GameStateControl;
+import gamestate.LevelState;
+import tiles.Background;
+import tiles.TileMap;
 
+@SuppressWarnings("HardcodedFileSeparator")
+//File.separator doesn't work for getResourceAsStream.
+
+
+/**
+ * The state for level 2
+ */
 public class Level2State extends LevelState {
 
-    public Level2State(GameStateManager gsm) {
-        this.gsm = gsm;
+    /**
+     * Level 2
+     * @param gsc game state control for the level
+     */
+    public Level2State(GameStateControl gsc) {
+        super(gsc);
         init();
     }
 
+    @Override
     public void init() {
-        if(gsm.getPaused() != GameStateManager.LEVEL2STATE) {
+        if(gameStateControl.getPaused() != GameStateControl.LEVEL2STATE) {
             //map design
-            this.bg = new Background("/lvl1background.png");
-            this.tileSize = GamePanel.HEIGHT / 12;
-            this.tileMap = new TileMap("/level2.txt", 40);
+            this.background = new Background("/lvl1background.png");
+            this.tileSize = GamePanel.HEIGHT / TILE_SCALE;
+            this.tileMap = new TileMap("/level2.txt", tileSize);
 
             //player properties
-            this.playerSize = tileSize - 15;
+            this.playerSize = tileSize - PLAYER_SIZE_OFFSET;
             this.player = new Player(tileMap, playerSize);
-            this.player.setX(55);
-            this.player.setY(55);
-            this.player.setFlying(false);
+            this.player.setX(START_X);
+            this.player.setY(START_Y);
+            this.player.setFlying(true);
 
             //camera boundary properties
             this.xmax = tileMap.getXmax();

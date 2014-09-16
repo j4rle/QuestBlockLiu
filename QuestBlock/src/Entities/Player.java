@@ -1,15 +1,26 @@
-package Entities;
+package entities;
 
-import Tiles.TileMap;
+import tiles.TileMap;
 
 import java.awt.*;
 
+@SuppressWarnings({"AssignmentToSuperclassField", "MagicNumber"})
+//"magic numbers" are actually values for a color
+//Assignments to fields in super class used to
+/**
+ * The main player in the game. Controlled by keyboard.
+ */
 public class Player extends Movable {
 
+    /**
+     *
+     * @param tm tileMap that should be used
+     * @param size Size of the player
+     */
 	public Player(TileMap tm, int size) {
         //player properties
 		this.tileMap = tm;
-		this.playerColor = new Color(255,0,0,90);
+        this.playerColor = new Color(255,0,0,90);
 
         //size
 		this.width = size;
@@ -46,19 +57,19 @@ public class Player extends Movable {
         slidingSpeed = x;
     }
 
-	public void setLeft(boolean b){
-		left = b;
+	public void setLeft(boolean tempBool){
+		left = tempBool;
 	}
 
-	public void setRight(boolean b){
-		right = b;
+	public void setRight(boolean tempBool){
+		right = tempBool;
 
 	}
-	public void setFlying(boolean b){
-		flying = b;
+	public void setFlying(boolean tempBool){
+		flying = tempBool;
 	}
 
-	public void setJumping(boolean b){
+	public void setJumping(boolean tempBool){
 		double nextX;
 
         checkSliding();
@@ -70,12 +81,12 @@ public class Player extends Movable {
 		}
 		calculateCorners(nextX, y);
 		if(!falling || sliding){ //player can jump from walls
-			jumping = b;
+			jumping = tempBool;
 		}
 	}
 
-	public void setSprint(boolean b){
-		sprinting = b;
+	public void setSprint(boolean tempBool){
+		sprinting = tempBool;
 	}
 
     public void checkSliding(){
@@ -197,7 +208,6 @@ public class Player extends Movable {
 		if(dy < 0){ //accelerating upwards
 			if(topLeft || topRight){
 				dy = 0;
-				tempY = currentRow * tileMap.getTileSize() + height / 2;
 
 			}
 			else{ //no collision, can continue
@@ -208,7 +218,7 @@ public class Player extends Movable {
 			if(bottomLeft || bottomRight){
 				dy = 0;
 				falling = false;
-				tempY = (currentRow + 1) * tileMap.getTileSize() - height / 2;
+				tempY = (currentRow + 1) * tileMap.getTileSize() - height / 2.0;
 			}
 			else{ //no collision
 				tempY += dy;
@@ -219,7 +229,7 @@ public class Player extends Movable {
 		if(dx < 0){ //to the left
 			if(topLeft || bottomLeft){
 				dx = 0;
-				tempX = currentColumn * tileMap.getTileSize() + width / 2;
+				tempX = currentColumn * tileMap.getTileSize() + width / 2.0;
 
 			}
 			else{ //no collision
@@ -230,14 +240,14 @@ public class Player extends Movable {
 			if(topRight || bottomRight){
 				sliding = true;
 				dx = 0;
-				tempX = (currentColumn + 1) * tileMap.getTileSize() - width / 2;
+				tempX = (currentColumn + 1) * tileMap.getTileSize() - width / 2.0;
 			}
 			else{ //no collision
 				tempX += dx;
 			}
 		}
 
-		if(!falling){
+		if(!falling){ //checks below the player to decide if the player is falling
 			calculateCorners(x, y + 1);
 			if(!bottomLeft && !bottomRight){
 				falling = true;
