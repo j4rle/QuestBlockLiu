@@ -45,6 +45,7 @@ public class LevelState implements GameState{
 
     public void update() {
         player.update();
+        tileMap.update();
 
         if(player.getX() < xmax || player.getX() > xmin){
             tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));}

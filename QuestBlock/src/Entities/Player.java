@@ -19,6 +19,7 @@ public class Player extends Movable {
     protected boolean sprinting;
     protected boolean sliding;
     protected boolean flying;
+    protected long lastJump = 0;
 
 
     /**
@@ -89,8 +90,9 @@ public class Player extends Movable {
 			nextX = x - 5;
 		}
 		calculateCorners(nextX, y);
-		if(!falling || sliding){ //player can jump from walls
+		if(!falling || sliding && System.currentTimeMillis() - lastJump > 500){ //player can jump from walls
 			jumping = tempBool;
+            lastJump = System.currentTimeMillis();
 		}
 	}
 
@@ -101,18 +103,18 @@ public class Player extends Movable {
     public void checkSliding(){
         if(!flying){
             if(dx > 0) {
-                calculateCorners(x + 10, y);
+                calculateCorners(x + 7, y);
                 sliding = (topRight || topLeft || bottomRight || bottomLeft);
             }
             else if(dx < 0) {
-                calculateCorners(x - 10, y);
+                calculateCorners(x - 7, y);
                 sliding = (topRight || topLeft || bottomRight || bottomLeft);
             }
             else {
-                calculateCorners(x + 10, y);
+                calculateCorners(x + 7, y);
                 sliding = (topRight || topLeft);
                 if(!sliding){
-                    calculateCorners(x - 10, y);
+                    calculateCorners(x - 7, y);
                     sliding = (topRight || topLeft);
                 }
             }
@@ -188,9 +190,9 @@ public class Player extends Movable {
 		}
 
 		if(jumping){ //start of jump
-			dy = jumpStart;
-			falling = true;
-			jumping = false;
+            dy = jumpStart;
+            falling = true;
+            jumping = false;
 		}
 
 		if(falling){ //mid jump or if falling down
@@ -259,10 +261,9 @@ public class Player extends Movable {
 		}
 
 		if(!falling){ //checks below the player to decide if the player is falling
-			calculateCorners(x, y + 2);
+			calculateCorners(x, y + 1.5);
 			if(!bottomLeft && !bottomRight){
 				falling = true;
-                System.out.println("falling");
             }
 		}
 		x = tempX;

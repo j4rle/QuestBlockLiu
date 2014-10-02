@@ -1,8 +1,7 @@
 package gamestate;
 
-import levels.Level1State;
-import levels.Level2State;
-import levels.RandomizerState;
+import levels.LevelType;
+import levels.LoadLevel;
 import menus.LevelSelectMenu;
 import menus.MainMenu;
 import menus.PauseMenu;
@@ -37,9 +36,9 @@ public class GameStateControl {
         gameStates.add(new LevelSelectMenu(this));
 
         //levels
-		gameStates.add(new Level1State(this));
-        gameStates.add(new Level2State(this));
-        gameStates.add(new RandomizerState(this));
+		gameStates.add(new LoadLevel(this, LevelType.LEVEL1)); //level 1
+        gameStates.add(new LoadLevel(this, LevelType.LEVEL2)); //level 2
+        gameStates.add(new LoadLevel(this, LevelType.RANDOMIZER)); //randomization-level
 	}
 
     public int getGameState(){
