@@ -18,14 +18,6 @@ public abstract class Movable {
 	protected int height;
 	protected Color playerColor = null;
 
-	protected boolean left;
-	protected boolean right;
-	protected boolean jumping;
-	protected boolean falling;
-	protected boolean sprinting;
-	protected boolean sliding;
-	protected boolean flying;
-
 	protected double moveSpeed;
 	protected double maxSpeed;
 	protected double maxFallingSpeed;

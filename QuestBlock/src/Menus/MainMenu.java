@@ -84,17 +84,20 @@ public class MainMenu extends MenuState {
 
     @Override
 	public void select() {
-		if(currentChoice == 0){
-            gameStateControl.setPaused(GameStateControl.MAINMENUSTATE);
-			gameStateControl.setGameState(GameStateControl.LEVELSELECT);
-		}
-		if(currentChoice == 1){
-			help = !help;
+        final int START = 0;
+        final int HELP = 1;
+        final int QUIT = 2;
 
-		}
-		if(currentChoice == 2){
-			System.exit(0);
-		}
+        switch (currentChoice){
+            case START:
+                gameStateControl.setPaused(GameStateControl.MAINMENUSTATE);
+                gameStateControl.setGameState(GameStateControl.LEVELSELECT);
+                break;
+            case HELP:
+                help = !help;
+                break;
+            case QUIT:
+                System.exit(0);
+        }
 	}
-
 }

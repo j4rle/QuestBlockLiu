@@ -12,7 +12,6 @@ public class GameEngine extends KeyAdapter {
     private GamePanel gamePanel;
 
     protected static final int LOGIC_DELAY_IN_MS = 15;
-    protected static final int RENDER_DELAY_IN_MS = 15;
 
     public GameEngine(GamePanel gamePanel) {
         this.gsc = new GameStateControl();
@@ -37,21 +36,14 @@ public class GameEngine extends KeyAdapter {
             public void actionPerformed(ActionEvent e) {
                 update();
                 render();
-            }
-        };
-
-        final Action drawOneFrame = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 gamePanel.draw();
             }
         };
 
+
         Timer gameLogicTimer = new Timer(LOGIC_DELAY_IN_MS, doOneLogic);
-        Timer drawTimer = new Timer(RENDER_DELAY_IN_MS, drawOneFrame);
 
         gameLogicTimer.start();
-        drawTimer.start();
     }
 
     private void update(){

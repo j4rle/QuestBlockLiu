@@ -175,20 +175,26 @@ public class TileMap {
 		Color block1Color = new Color(255,255,255,90);
 		Color outsideColor = new Color(87,87,87, 90);
 
+        //Different types of tiles
+        final int BLOCK1 = 0;
+        final int NONE = 1;
+        final int BORDER = 2;
+
 		for (int row = 0; row < mapHeight; row++) {
 			for (int col = 0; col < mapWidth; col++) {
 
 				int rc = map[row][col]; //current position
 
-				if(rc == 0){
-					g.setColor(block1Color); //this is a type 1 tile
-				}
-				if(rc ==1){ //no tile to be drawn
-                    continue;
-				}
-				if(rc == 2){
-					g.setColor(outsideColor); //border surrounding map
-				}
+                switch (rc) {
+                    case BLOCK1:
+                        g.setColor(block1Color); //this is a block 1-tile
+                        break;
+                    case NONE: //no tile to be drawn
+                        continue;
+                    case BORDER:
+                        g.setColor(outsideColor); //border surrounding map
+                        break;
+                }
 
 				//tile
 				g.fillRect(x + col * tileSize, y + row * tileSize, tileSize,tileSize);

@@ -12,6 +12,15 @@ import java.awt.*;
  */
 public class Player extends Movable {
 
+    protected boolean left;
+    protected boolean right;
+    protected boolean jumping;
+    protected boolean falling;
+    protected boolean sprinting;
+    protected boolean sliding;
+    protected boolean flying;
+
+
     /**
      *
      * @param tm tileMap that should be used
@@ -141,6 +150,9 @@ public class Player extends Movable {
             maxSpeed = 5.1;
             moveSpeed = 0.5;
         }
+        if(!sliding){
+            maxFallingSpeed = 100;
+        }
 		if(sliding){
 			maxFallingSpeed = slidingSpeed;
 		}
@@ -208,7 +220,6 @@ public class Player extends Movable {
 		if(dy < 0){ //accelerating upwards
 			if(topLeft || topRight){
 				dy = 0;
-
 			}
 			else{ //no collision, can continue
 				tempY += dy;
@@ -248,10 +259,11 @@ public class Player extends Movable {
 		}
 
 		if(!falling){ //checks below the player to decide if the player is falling
-			calculateCorners(x, y + 1);
+			calculateCorners(x, y + 2);
 			if(!bottomLeft && !bottomRight){
 				falling = true;
-			}
+                System.out.println("falling");
+            }
 		}
 		x = tempX;
 		y = tempY;
@@ -263,6 +275,8 @@ public class Player extends Movable {
 
 		int tx = tileMap.getX();
 		int ty = tileMap.getY();
+
+
 
 		g.setColor(playerColor);
 		g.fillRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3);
