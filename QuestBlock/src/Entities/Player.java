@@ -1,6 +1,7 @@
 package entities;
 
 import tiles.TileMap;
+import tiles.TileType;
 
 import java.awt.*;
 
@@ -127,20 +128,18 @@ public class Player extends Movable {
 		int topTile = tileMap.getRowTile((int)(y - height / 2));
 		int bottomTile = tileMap.getRowTile((int)(y + height / 2) - 1);
 
-		int[] blocked = {0,2}; //blocks that will block movement
 
-		topLeft = (tileMap.getTile(topTile, leftTile) == blocked[0]) ||
-				(tileMap.getTile(topTile, leftTile) == blocked[1]);
+		topLeft = tileMap.getTile(topTile, leftTile).isCollidable();
 
-		topRight = tileMap.getTile(topTile,rightTile) == blocked[0] ||
-				tileMap.getTile(topTile,rightTile) == blocked[1];
+		topRight = tileMap.getTile(topTile,rightTile).isCollidable();
 
-		bottomLeft = tileMap.getTile(bottomTile, leftTile) == blocked[0] ||
-				tileMap.getTile(bottomTile, leftTile) == blocked[1];
+		bottomLeft = tileMap.getTile(bottomTile, leftTile).isCollidable();
 
-		bottomRight = tileMap.getTile(bottomTile, rightTile) == blocked[0] ||
-				tileMap.getTile(bottomTile, rightTile) == blocked[1];
 
+		bottomRight = tileMap.getTile(bottomTile, rightTile).isCollidable();
+
+        tileMap.getTile(bottomTile, leftTile).steppedOn();
+        tileMap.getTile(bottomTile, rightTile).steppedOn(); //indicate that we have stepped on these tiles
 	}
 
 	public void update(){

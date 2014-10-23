@@ -41,8 +41,9 @@ public class LoadLevel extends LevelState{
         switch (level){
             case RANDOMIZER:
                 if(gameStateControl.getPaused() != GameStateControl.RANDOMIZERSTATE) {
-                    initRandomizer();
+                    break;
                 }
+                break;
             case LEVEL1:
                 if(this.gameStateControl.getPaused() != GameStateControl.LEVEL1STATE) {
                     initLevel1();
@@ -52,6 +53,7 @@ public class LoadLevel extends LevelState{
                 if(gameStateControl.getPaused() != GameStateControl.LEVEL2STATE) {
                     initLevel2();
                 }
+                break;
         }
     }
 
@@ -72,18 +74,5 @@ public class LoadLevel extends LevelState{
 
         initPlayer();
         cameraBounds();
-    }
-
-    private void initRandomizer(){
-        this.background = new Background("/background.png");
-        this.tileSize = GamePanel.HEIGHT / TILE_SCALE;
-        this.tileMap = new TileMap("/level2.txt", tileSize);
-        this.tileMap.setRandomized(true, 1, 100);
-
-        initPlayer();
-        cameraBounds();
-
-        this.player.setFlying(true);
-        this.player.setSlidingSpeed(5);
     }
 }

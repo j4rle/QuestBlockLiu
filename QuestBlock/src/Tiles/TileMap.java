@@ -6,13 +6,10 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Random;
 
 /**
  * The class responsible for reading maps from files.
  */
-@SuppressWarnings("MagicNumber")
-//"magic numbers" are color codes.
 
 public class TileMap {
 
@@ -23,21 +20,13 @@ public class TileMap {
 	private int ymin;
 	private int xmax;
 	private int ymax;
-	private int height;
-	private int width;
-    private double randomizeChanges;
-    private double randomizeInterval;
 
-    //for randomized map
-    private boolean randomized;
-    private boolean newRandomize;
-    private int randomizeCounter;
 
 	private int tileSize;
-	private int[][] map;
+	private TileType[][] map;
+    private Tile[][] tiles;
 	private int mapWidth; //width of the map as read from the map file
 	private int mapHeight; //height of the map as read from the map file
-    private int[] tileTypes;
 
     /**
      *
@@ -47,38 +36,89 @@ public class TileMap {
 	public TileMap(String s, int tileSize){
 
 		this.tileSize = tileSize;
-        this.randomized = false;
-        this.tileTypes = new int[]{1,2};
         this.map = null;
-		try{
-			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
+        initTileMap(s);
+        initTiles();
 
-			mapWidth = Integer.parseInt(br.readLine()); //reads first line
-			mapHeight = Integer.parseInt(br.readLine()); //reads second line
+    }
 
-			height = mapHeight * tileSize;
-			width = mapWidth * tileSize;
+    private void initTileMap(String s){
+        int height;
+        int width;
+        TileType tileType = TileType.NONE;
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
 
-			xmin = GamePanel.WIDTH - width;
-			xmax = 0;
-			ymin = GamePanel.HEIGHT-height;
-			ymax = 0;
+            mapWidth = Integer.parseInt(br.readLine()); //reads first line
+            mapHeight = Integer.parseInt(br.readLine()); //reads second line
 
-			map = new int[mapHeight][mapWidth]; //map represented as array
+            height = mapHeight * tileSize;
+            width = mapWidth * tileSize;
+
+            xmin = GamePanel.WIDTH - width;
+            xmax = 0;
+            ymin = GamePanel.HEIGHT-height;
+            ymax = 0;
+
+            map = new TileType[mapHeight][mapWidth]; //map represented as array
+            tiles = new Tile[mapHeight][mapWidth];
 
 
-			String delimiter = " "; //separator for information in our file
+            String delimiter = " "; //separator for information in our file
 
-			//Reading the rest of the map file:
-			for (int row = 0; row < mapHeight; row++) { //loop over rows (number of lines in map.txt)
-				String line = br.readLine();
-				String[] tokens = line.split(delimiter); //Splits the read line with the delimiter
-				for (int col = 0; col < mapWidth; col++) { //loop over columns
-					map[row][col] = Integer.parseInt(tokens[col]); //inserts the parsed int array into the correct column
-				}
-			}
-		} catch (IOException e) {
+            //Reading the rest of the map file:
+            for (int row = 0; row < mapHeight; row++) { //loop over rows (number of lines in map.txt)
+                String line = br.readLine();
+                String[] tokens = line.split(delimiter); //Splits the read line with the delimiter
+                for (int col = 0; col < mapWidth; col++) { //loop over columns
+                    int numTile = Integer.parseInt(tokens[col]); //inserts the parsed int array into the correct column
+                    switch(numTile){
+                        case 0:
+                            tileType = TileType.TYPE1;
+                            break;
+                        case 1:
+                            tileType = TileType.NONE;
+                            break;
+                        case 2:
+                            tileType = TileType.OUTSIDE;
+                            break;
+                        case 3:
+                            tileType = TileType.FALLTILE;
+                            break;
+                    }
+                    map[row][col]= tileType; //insert TileType-Enum in map-array for every tile
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void initTiles() {
+        System.out.println("initializing map...");
+        for (int row = 0; row < mapHeight; row++) {
+            for (int col = 0; col < mapWidth; col++) {
+
+                TileType rc = map[row][col]; //current position
+
+                switch (rc) {
+                    case TYPE1:
+                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc); //create new tile with given properties and place in array
+                        break;
+                    case NONE: //no tile to be placed
+                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc);
+                        break;
+                    case OUTSIDE:
+                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc);
+                        break;
+                    case FALLTILE:
+                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc);
+                        break;
+                    default:
+                        System.out.println("invalid tiletype");
+                        break;
+                }
+            }
         }
     }
 
@@ -113,8 +153,8 @@ public class TileMap {
 		return y / tileSize;
 	}
 
-	public int getTile(int row, int col){
-		return map[row][col]; //return value of map at this position
+	public Tile getTile(int row, int col){
+		return tiles[row][col]; //return Tile at this position
 	}
 
 	public int getTileSize(){
@@ -131,13 +171,6 @@ public class TileMap {
 		fixBounds();
 	}
 
-
-    public void setRandomized(boolean tempBool, double interval, double changes){
-        this.randomizeInterval = interval;
-        this.randomizeChanges = changes;
-        randomized = tempBool;
-    }
-
 	private void fixBounds() { //keeps the camera locked inside the level
 		if(x<xmin) x = xmin;
 		if(y<ymin) y = ymin;
@@ -145,64 +178,16 @@ public class TileMap {
 		if(y>ymax) y = ymax;
 	}
 
-    private void randomize(){
-        newRandomize = (randomizeCounter >= randomizeInterval);
-        if(newRandomize) {
-            Random rnd = new Random();
-
-            for (int i = 0; i < randomizeChanges; i++) {
-                int rndX = rnd.nextInt(mapWidth-2)+1;
-                int rndY = rnd.nextInt(mapHeight-2)+1;
-                int rndTile = rnd.nextInt(tileTypes.length);
-                map[rndY][rndX] = rndTile;
-            }
-            randomizeCounter = 0;
-        }
-        else{
-            randomizeCounter++;
-        }
-    }
 
     public void update(){
-        if(randomized) {
-            randomize();
-        }
     }
 
 	public void draw(Graphics2D g){
 
-		//iterate over rows and columns
-		Color block1Color = new Color(255,255,255,90);
-		Color outsideColor = new Color(87,87,87, 90);
-
-        //Different types of tiles
-        final int BLOCK1 = 0;
-        final int NONE = 1;
-        final int BORDER = 2;
-
-		for (int row = 0; row < mapHeight; row++) {
-			for (int col = 0; col < mapWidth; col++) {
-
-				int rc = map[row][col]; //current position
-
-                switch (rc) {
-                    case BLOCK1:
-                        g.setColor(block1Color); //this is a block 1-tile
-                        break;
-                    case NONE: //no tile to be drawn
-                        continue;
-                    case BORDER:
-                        g.setColor(outsideColor); //border surrounding map
-                        break;
-                }
-
-				//tile
-				g.fillRect(x + col * tileSize, y + row * tileSize, tileSize,tileSize);
-				//tile border
-				g.setColor(Color.WHITE);
-				g.drawRect(x + col * tileSize, y + row * tileSize, tileSize,tileSize);
-			}
-		}
+        for (int row = 0; row < mapHeight; row++) {
+            for (int col = 0; col < mapWidth; col++) {
+                tiles[row][col].draw(g,x,y);
+            }
+        }
 	}
-
 }

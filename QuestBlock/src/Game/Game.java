@@ -7,9 +7,9 @@ import javax.swing.*;
  */
 public final class Game{
 
+
     private Game() {
     }
-
     public static void main(String[] args) {
 		JFrame window = new JFrame("QuestBlock");
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
