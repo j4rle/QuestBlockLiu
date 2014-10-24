@@ -22,7 +22,7 @@ public class MainMenu extends MenuState {
     private boolean help; //toggles help
 
     //strings needed for main menu
-	private String[] helpText = {"Use A and D for movement","Use Space or W for jump", "- By Cian and Jarle"};
+	private String[] helpText = {"Reach the green block in","as little time as possible", "without drowning!"};
 
     /**
      *

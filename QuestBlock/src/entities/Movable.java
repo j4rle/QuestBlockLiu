@@ -16,6 +16,8 @@ public abstract class Movable {
 
 	protected int width;
 	protected int height;
+	protected int drowningCounter;
+	protected int drowningTimer;
 	protected Color playerColor = null;
 
 	protected double moveSpeed;
@@ -28,10 +30,10 @@ public abstract class Movable {
 
 	protected TileMap tileMap = null;
 
-	protected boolean topLeft;
-	protected boolean topRight;
-	protected boolean bottomLeft;
-	protected boolean bottomRight;
+	protected boolean topLeftBool;
+	protected boolean topRightBool;
+	protected boolean bottomLeftBool;
+	protected boolean bottomRightBool;
 
     public abstract void update();
     public abstract void draw(Graphics2D g);

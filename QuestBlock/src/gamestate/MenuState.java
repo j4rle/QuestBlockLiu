@@ -18,6 +18,7 @@ public class MenuState implements GameState {
     protected Font font;
     protected int currentChoice = 0;
     protected String[] options;
+    protected String headline = "";
 
     public MenuState(GameStateControl gsc) {
         this.gameStateControl = gsc;
@@ -35,14 +36,21 @@ public class MenuState implements GameState {
     public void draw(Graphics2D g) {
         final int optionsCoordinate = 50;
         final int optionScale = 30;
+        //font proterties
+        g.setFont(font);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
         //background
         this.background.draw(g);
 
+        //headline
+        g.setColor(Color.yellow);
+        g.drawString(headline, 100,100);
+
+
         //options
-        g.setFont(font);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
         for (int i = 0; i < options.length; i++) {
             if(i == currentChoice){
                 g.setColor(Color.white);

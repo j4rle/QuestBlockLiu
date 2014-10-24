@@ -3,6 +3,7 @@ package tiles;
 
 import java.awt.*;
 
+@SuppressWarnings("MagicNumber") //"Magic numbers" here are color codes in RGB
 public class Tile {
     private int TILESIZE;
     private TileType tileType;
@@ -13,6 +14,7 @@ public class Tile {
     private boolean hidden = false;
     private boolean collidable = true;
     private boolean steppedOn = false;
+    private boolean water = false;
     private int steppedOnTimer = 0;
     private int resetCount = 0;
 
@@ -40,6 +42,14 @@ public class Tile {
             case FALLTILE:
                 this.tileColor = new Color(255,153,0, 90);
                 break;
+            case VICTORYTILE:
+                this.tileColor = new Color(0,153,0,90);
+                break;
+            case WATERTILE:
+                this.tileColor = new Color(0,0,153,90);
+                collidable = false;
+                water = true;
+                break;
         }
     }
 
@@ -47,9 +57,18 @@ public class Tile {
         return collidable;
     }
 
+    public boolean isWater() {
+        return water;
+    }
+
     public void steppedOn(){
         steppedOn = true;
     }
+
+    public boolean isSteppedOn() {
+        return steppedOn;
+    }
+
 
     private void resetTile(){
         if(resetCount >= RESETMAXCOUNT){
@@ -57,6 +76,7 @@ public class Tile {
             collidable = true;
             resetCount = 0;
         }
+
     }
 
     private void hideTile(){
@@ -67,6 +87,7 @@ public class Tile {
             steppedOn = false;
         }
     }
+
 
     public void draw(Graphics2D g,int x,int y){
         if(!hidden){

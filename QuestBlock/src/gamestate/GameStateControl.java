@@ -2,9 +2,7 @@ package gamestate;
 
 import levels.LevelType;
 import levels.LoadLevel;
-import menus.LevelSelectMenu;
-import menus.MainMenu;
-import menus.PauseMenu;
+import menus.*;
 
 import java.awt.*;
 import java.util.*;
@@ -19,6 +17,7 @@ public class GameStateControl {
 	private List<GameState> gameStates;
 	private int currentState = 0;
     private int currentPaused = 0;
+    private long score = 0;
 
 	public static final int MAINMENUSTATE = 0;
 	public static final int PAUSESTATE = 1;
@@ -26,6 +25,8 @@ public class GameStateControl {
 	public static final int LEVEL1STATE = 3;
 	public static final int LEVEL2STATE = 4;
 	public static final int RANDOMIZERSTATE = 5;
+	public static final int VICTORYSTATE = 6;
+	public static final int DEATHSTATE = 7;
 
 	public GameStateControl(){
 		gameStates = new ArrayList<>();
@@ -39,7 +40,19 @@ public class GameStateControl {
 		gameStates.add(new LoadLevel(this, LevelType.LEVEL1)); //level 1
         gameStates.add(new LoadLevel(this, LevelType.LEVEL2)); //level 2
         gameStates.add(new LoadLevel(this, LevelType.RANDOMIZER)); //randomization-level
+
+        //victory screen
+        gameStates.add(new VictoryMenu(this));
+        gameStates.add(new DeathMenu(this));
 	}
+
+    public void setScore(long score) {
+        this.score = score;
+    }
+
+    public long getScore() {
+        return score;
+    }
 
     public int getGameState(){
         return currentState;

@@ -28,6 +28,10 @@ public class TileMap {
 	private int mapWidth; //width of the map as read from the map file
 	private int mapHeight; //height of the map as read from the map file
 
+    private int victoryRow = 0;
+    private int victoryCol = 0;
+    private boolean victory = false;
+
     /**
      *
      * @param s file path for tilemap
@@ -85,6 +89,12 @@ public class TileMap {
                         case 3:
                             tileType = TileType.FALLTILE;
                             break;
+                        case 4:
+                            tileType = TileType.VICTORYTILE;
+                            break;
+                        case 5:
+                            tileType = TileType.WATERTILE;
+                            break;
                     }
                     map[row][col]= tileType; //insert TileType-Enum in map-array for every tile
                 }
@@ -95,34 +105,22 @@ public class TileMap {
     }
 
     private void initTiles() {
-        System.out.println("initializing map...");
         for (int row = 0; row < mapHeight; row++) {
             for (int col = 0; col < mapWidth; col++) {
 
                 TileType rc = map[row][col]; //current position
-
-                switch (rc) {
-                    case TYPE1:
-                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc); //create new tile with given properties and place in array
-                        break;
-                    case NONE: //no tile to be placed
-                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc);
-                        break;
-                    case OUTSIDE:
-                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc);
-                        break;
-                    case FALLTILE:
-                        tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc);
-                        break;
-                    default:
-                        System.out.println("invalid tiletype");
-                        break;
+                tiles[row][col] = new Tile(tileSize, col * tileSize, y + row * tileSize, rc); //create new tile with given properties and place in array rc is Enum TileType
+                if(rc == TileType.VICTORYTILE){
+                    victoryRow = row;
+                    victoryCol = col;
                 }
+
             }
         }
     }
 
-	public int getXmin() {
+
+    public int getXmin() {
 		return xmin;
 	}
 
@@ -166,7 +164,11 @@ public class TileMap {
 		fixBounds();
 	}
 
-	public void setY(int y) {
+    public boolean isVictory() {
+        return victory;
+    }
+
+    public void setY(int y) {
 		this.y = y;
 		fixBounds();
 	}
@@ -180,6 +182,9 @@ public class TileMap {
 
 
     public void update(){
+        if(tiles[victoryRow][victoryCol].isSteppedOn()){
+            victory = true;
+        }
     }
 
 	public void draw(Graphics2D g){

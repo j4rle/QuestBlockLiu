@@ -26,6 +26,9 @@ public class LevelState implements GameState{
     protected int ymin;
 
     protected int playerSize;
+    protected long score = -1;
+    protected long startTime = -1;
+    protected long finishTime = -1;
 
     protected static final int TILE_SCALE = 12;
     protected int tileSize;
@@ -46,6 +49,19 @@ public class LevelState implements GameState{
     public void update() {
         player.update();
         tileMap.update();
+        if(tileMap.isVictory()){
+            finishTime = System.currentTimeMillis();
+            score =  finishTime - startTime;;
+            gameStateControl.setScore(score);
+            System.out.println("Score: "+ score);
+            gameStateControl.setPaused(gameStateControl.getGameState());
+            gameStateControl.setGameState((GameStateControl.VICTORYSTATE));
+        }
+        if(player.isDead()){
+            gameStateControl.setPaused(gameStateControl.getGameState());
+            gameStateControl.setGameState((GameStateControl.DEATHSTATE));
+
+        }
 
         if(player.getX() < xmax || player.getX() > xmin){
             tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));}
@@ -53,7 +69,6 @@ public class LevelState implements GameState{
             tileMap.setY((int) (GamePanel.HEIGHT / 2 - player.getY()));
         }
     }
-
 
     public void draw(Graphics2D g) {
         background.draw(g);

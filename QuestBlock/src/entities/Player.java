@@ -1,7 +1,7 @@
 package entities;
 
+import tiles.Tile;
 import tiles.TileMap;
-import tiles.TileType;
 
 import java.awt.*;
 
@@ -20,6 +20,7 @@ public class Player extends Movable {
     protected boolean sprinting;
     protected boolean sliding;
     protected boolean flying;
+    protected boolean dead = false;
     protected long lastJump = 0;
 
 
@@ -46,9 +47,16 @@ public class Player extends Movable {
         this.gravity = 0.30;
         this.slidingSpeed = 3.5;
 
+        this.drowningCounter = 0;
+        this.drowningTimer = 100;
+
 	}
 
-	public double getX(){
+    public boolean isDead() {
+        return dead;
+    }
+
+    public double getX(){
 		return x;
 	}
 
@@ -64,9 +72,6 @@ public class Player extends Movable {
 		this.y = y;
 	}
 
-    public void setSlidingSpeed(double x){
-        slidingSpeed = x;
-    }
 
 	public void setLeft(boolean tempBool){
 		left = tempBool;
@@ -104,23 +109,24 @@ public class Player extends Movable {
     public void checkSliding(){
         if(!flying){
             if(dx > 0) {
-                calculateCorners(x + 7, y);
-                sliding = (topRight || topLeft || bottomRight || bottomLeft);
+                calculateCorners(x + 3, y);
+                sliding = (topRightBool || topLeftBool || bottomRightBool || bottomLeftBool);
             }
             else if(dx < 0) {
-                calculateCorners(x - 7, y);
-                sliding = (topRight || topLeft || bottomRight || bottomLeft);
+                calculateCorners(x - 3, y);
+                sliding = (topRightBool || topLeftBool || bottomRightBool || bottomLeftBool);
             }
             else {
-                calculateCorners(x + 7, y);
-                sliding = (topRight || topLeft);
+                calculateCorners(x + 3, y);
+                sliding = (topRightBool || topLeftBool);
                 if(!sliding){
-                    calculateCorners(x - 7, y);
-                    sliding = (topRight || topLeft);
+                    calculateCorners(x - 3, y);
+                    sliding = (topRightBool || topLeftBool);
                 }
             }
         }
     }
+
 
 	public void calculateCorners(double x, double y){ //rectangular hit-detection
 		int leftTile = tileMap.getColTile((int) x - width / 2);
@@ -128,21 +134,35 @@ public class Player extends Movable {
 		int topTile = tileMap.getRowTile((int)(y - height / 2));
 		int bottomTile = tileMap.getRowTile((int)(y + height / 2) - 1);
 
+        //check what tiles surrounds the player
+        Tile topLeft = tileMap.getTile(topTile, leftTile);
+        Tile topRight = tileMap.getTile(topTile,rightTile);
+        Tile bottomLeft = tileMap.getTile(bottomTile, leftTile);
+        Tile bottomRight = tileMap.getTile(bottomTile, rightTile);
 
-		topLeft = tileMap.getTile(topTile, leftTile).isCollidable();
-
-		topRight = tileMap.getTile(topTile,rightTile).isCollidable();
-
-		bottomLeft = tileMap.getTile(bottomTile, leftTile).isCollidable();
-
-
-		bottomRight = tileMap.getTile(bottomTile, rightTile).isCollidable();
+        //checking every corner for collision
+		topLeftBool = topLeft.isCollidable();
+		topRightBool = topRight.isCollidable();
+		bottomLeftBool = bottomLeft.isCollidable();
+		bottomRightBool = bottomRight.isCollidable();
 
         tileMap.getTile(bottomTile, leftTile).steppedOn();
         tileMap.getTile(bottomTile, rightTile).steppedOn(); //indicate that we have stepped on these tiles
-	}
+
+        if(topLeft.isWater() || topRight.isWater() || bottomLeft.isWater() || bottomRight.isWater()){
+            drowningCounter++;
+        }
+        else{
+            drowningCounter = 0;
+        }
+    }
 
 	public void update(){
+
+        if(drowningCounter > drowningTimer){
+            dead = true;
+        }
+
         if(sprinting){
             maxSpeed = 10;
             moveSpeed = 0.6;
@@ -219,7 +239,7 @@ public class Player extends Movable {
 
 		calculateCorners(x, nextY); //calculate for next y
 		if(dy < 0){ //accelerating upwards
-			if(topLeft || topRight){
+			if(topLeftBool || topRightBool){
 				dy = 0;
 			}
 			else{ //no collision, can continue
@@ -227,7 +247,7 @@ public class Player extends Movable {
 			}
 		}
 		if(dy > 0){ //accelerating towards ground
-			if(bottomLeft || bottomRight){
+			if(bottomLeftBool || bottomRightBool){
 				dy = 0;
 				falling = false;
 				tempY = (currentRow + 1) * tileMap.getTileSize() - height / 2.0;
@@ -239,7 +259,7 @@ public class Player extends Movable {
 
 		calculateCorners(nextX, y); //calculate for x
 		if(dx < 0){ //to the left
-			if(topLeft || bottomLeft){
+			if(topLeftBool || bottomLeftBool){
 				dx = 0;
 				tempX = currentColumn * tileMap.getTileSize() + width / 2.0;
 
@@ -249,7 +269,7 @@ public class Player extends Movable {
 			}
 		}
 		if(dx > 0){ //to the right
-			if(topRight || bottomRight){
+			if(topRightBool || bottomRightBool){
 				sliding = true;
 				dx = 0;
 				tempX = (currentColumn + 1) * tileMap.getTileSize() - width / 2.0;
@@ -261,7 +281,7 @@ public class Player extends Movable {
 
 		if(!falling){ //checks below the player to decide if the player is falling
 			calculateCorners(x, y + 1.5);
-			if(!bottomLeft && !bottomRight){
+			if(!bottomLeftBool && !bottomRightBool){
 				falling = true;
             }
 		}

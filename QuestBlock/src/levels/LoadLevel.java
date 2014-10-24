@@ -19,6 +19,7 @@ public class LoadLevel extends LevelState{
     @Override
     public void init(){
         loadAssets(levelChoice);
+        startTime = System.currentTimeMillis();
     }
 
     private void cameraBounds(){
