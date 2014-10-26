@@ -5,9 +5,9 @@ import java.awt.*;
 
 @SuppressWarnings("MagicNumber") //"Magic numbers" here are color codes in RGB
 public class Tile {
-    private int TILESIZE;
+    private int tileSize;
     private TileType tileType;
-    private Color tileColor;
+    private Color tileColor = null;
     private int tileScaleX;
     private int tileScaleY;
 
@@ -25,7 +25,7 @@ public class Tile {
     public Tile(int tilesize, int tileScaleX, int tileScaleY, TileType tileType) {
         this.tileScaleX = tileScaleX;
         this.tileScaleY = tileScaleY;
-        this.TILESIZE = tilesize;
+        this.tileSize = tilesize;
         this.tileType = tileType;
 
         switch(tileType){
@@ -92,10 +92,10 @@ public class Tile {
     public void draw(Graphics2D g,int x,int y){
         if(!hidden){
             g.setColor(tileColor);
-            g.fillRect(x + tileScaleX, y + tileScaleY, TILESIZE, TILESIZE);
+            g.fillRect(x + tileScaleX, y + tileScaleY, tileSize, tileSize);
             //tile border
             g.setColor(Color.WHITE);
-            g.drawRect(x + tileScaleX, y + tileScaleY, TILESIZE, TILESIZE);
+            g.drawRect(x + tileScaleX, y + tileScaleY, tileSize, tileSize);
         }
         if(tileType == TileType.FALLTILE){
             if(!steppedOn){

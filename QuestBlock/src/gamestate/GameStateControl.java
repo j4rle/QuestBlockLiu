@@ -1,5 +1,6 @@
 package gamestate;
 
+import game.HighScore;
 import levels.LevelType;
 import levels.LoadLevel;
 import menus.*;
@@ -18,6 +19,8 @@ public class GameStateControl {
 	private int currentState = 0;
     private int currentPaused = 0;
     private long score = 0;
+    private String playerName ="";
+    private java.util.List<HighScore> highScoreList = new ArrayList<>();
 
 	public static final int MAINMENUSTATE = 0;
 	public static final int PAUSESTATE = 1;
@@ -46,8 +49,36 @@ public class GameStateControl {
         gameStates.add(new DeathMenu(this));
 	}
 
+    public void sortHighscores(){
+        Collections.sort(highScoreList, new HighScore.ScoreComparator());
+    }
+
+    public void addHighscore(HighScore highScore){
+        highScoreList.add(highScore);
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getName(int index){
+        return highScoreList.get(index).getName();
+    }
+
+    public int getScore(int index){
+        return highScoreList.get(index).getScore();
+    }
+
     public void setScore(long score) {
         this.score = score;
+    }
+
+    public void clearHighscores(){
+        highScoreList.clear();
     }
 
     public long getScore() {

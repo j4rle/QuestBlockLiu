@@ -2,10 +2,16 @@ package levels;
 
 import entities.Player;
 import game.GamePanel;
+import game.HighScore;
 import gamestate.GameStateControl;
 import gamestate.LevelState;
 import tiles.Background;
 import tiles.TileMap;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Scanner;
 
 public class LoadLevel extends LevelState{
     protected LevelType levelChoice;
@@ -42,6 +48,7 @@ public class LoadLevel extends LevelState{
         switch (level){
             case RANDOMIZER:
                 if(gameStateControl.getPaused() != GameStateControl.RANDOMIZERSTATE) {
+                    System.out.println("randomizer not featured");
                     break;
                 }
                 break;
@@ -58,12 +65,59 @@ public class LoadLevel extends LevelState{
         }
     }
 
+    private void addEntry(String combination){
+        String delimiter = ":";
+        String name = combination.split(delimiter)[0];
+        int score = Integer.parseInt(combination.split(delimiter)[1]);
+
+        HighScore tempScore = new HighScore(name, score);
+        gameStateControl.addHighscore(tempScore);
+
+    }
+
+    private void loadHighScores(LevelType level){
+        gameStateControl.clearHighscores();
+        ClassLoader classloader = getClass().getClassLoader();
+
+        switch (level){
+            case LEVEL1:
+                filename = "lvl1hs.txt";
+                break;
+            case LEVEL2:
+                filename = "lvl2hs.txt";
+                break;
+            case RANDOMIZER:
+                System.out.println("randomizer not added");
+                break;
+            default:
+                System.out.println("no highscore file found");
+        }
+
+        URL url = classloader.getResource(filename);
+        if(url == null){
+            System.out.println("Error loading file "+filename);
+        }
+        else{
+            File file = new File(url.getFile());
+            try(Scanner scanner = new Scanner(file)){
+                while(scanner.hasNext()){
+                    addEntry(scanner.next());
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 
     private void initLevel1(){
         this.background = new Background("/lvl1background.png");
         this.tileSize = GamePanel.HEIGHT / TILE_SCALE;
         this.tileMap = new TileMap("/level1.txt", tileSize);
 
+        loadHighScores(LevelType.LEVEL1);
         initPlayer();
         cameraBounds();
     }
@@ -73,6 +127,7 @@ public class LoadLevel extends LevelState{
         this.tileSize = GamePanel.HEIGHT / TILE_SCALE;
         this.tileMap = new TileMap("/level2.txt", tileSize);
 
+        loadHighScores(LevelType.LEVEL2);
         initPlayer();
         cameraBounds();
     }

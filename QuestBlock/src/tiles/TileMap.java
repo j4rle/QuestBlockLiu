@@ -24,7 +24,7 @@ public class TileMap {
 
 	private int tileSize;
 	private TileType[][] map;
-    private Tile[][] tiles;
+    private Tile[][] tiles = null;
 	private int mapWidth; //width of the map as read from the map file
 	private int mapHeight; //height of the map as read from the map file
 
@@ -47,17 +47,15 @@ public class TileMap {
     }
 
     private void initTileMap(String s){
-        int height;
-        int width;
-        TileType tileType = TileType.NONE;
+        BufferedReader br = null;
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
+            br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
 
             mapWidth = Integer.parseInt(br.readLine()); //reads first line
             mapHeight = Integer.parseInt(br.readLine()); //reads second line
 
-            height = mapHeight * tileSize;
-            width = mapWidth * tileSize;
+            int height = mapHeight * tileSize;
+            int width = mapWidth * tileSize;
 
             xmin = GamePanel.WIDTH - width;
             xmax = 0;
@@ -71,6 +69,7 @@ public class TileMap {
             String delimiter = " "; //separator for information in our file
 
             //Reading the rest of the map file:
+            TileType tileType = TileType.NONE;
             for (int row = 0; row < mapHeight; row++) { //loop over rows (number of lines in map.txt)
                 String line = br.readLine();
                 String[] tokens = line.split(delimiter); //Splits the read line with the delimiter
@@ -101,6 +100,14 @@ public class TileMap {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                if(br != null){
+                    br.close();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 

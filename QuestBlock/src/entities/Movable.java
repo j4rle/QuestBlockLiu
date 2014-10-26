@@ -35,6 +35,4 @@ public abstract class Movable {
 	protected boolean bottomLeftBool;
 	protected boolean bottomRightBool;
 
-    public abstract void update();
-    public abstract void draw(Graphics2D g);
 }

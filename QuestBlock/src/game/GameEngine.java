@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Scanner;
 
 public class GameEngine extends KeyAdapter {
     private GameStateControl gsc;
@@ -31,6 +32,12 @@ public class GameEngine extends KeyAdapter {
 
 
     public void init(){
+
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Enter your name:");
+        String playerName = reader.next();
+        gsc.setPlayerName(playerName);
+
         final Action doOneLogic = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

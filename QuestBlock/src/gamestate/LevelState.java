@@ -2,11 +2,17 @@ package gamestate;
 
 import entities.Player;
 import game.GamePanel;
+import game.HighScore;
+import levels.LevelType;
+import menus.VictoryMenu;
 import tiles.Background;
 import tiles.TileMap;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * The superclass for different level states
@@ -26,9 +32,10 @@ public class LevelState implements GameState{
     protected int ymin;
 
     protected int playerSize;
-    protected long score = -1;
+    protected int score = -1;
     protected long startTime = -1;
     protected long finishTime = -1;
+    protected String filename = "";
 
     protected static final int TILE_SCALE = 12;
     protected int tileSize;
@@ -43,6 +50,42 @@ public class LevelState implements GameState{
         this.background = null;
     }
 
+    private void victoryActions(){
+        finishTime = System.currentTimeMillis();
+        score = (int)(finishTime - startTime);
+        gameStateControl.setScore(score);
+        FileWriter fileWriter = null;
+
+
+        HighScore playerScore = new HighScore(gameStateControl.getPlayerName(),score);
+        gameStateControl.addHighscore(playerScore);
+
+        gameStateControl.setPaused(gameStateControl.getGameState());
+        gameStateControl.setGameState((GameStateControl.VICTORYSTATE));
+
+
+        try{
+            ClassLoader classloader = getClass().getClassLoader();
+            URL url = classloader.getResource(filename);
+            if (url != null){
+                fileWriter= new FileWriter(url.getFile(), true);
+                fileWriter.write(playerScore.getName()+":"+playerScore.getScore()+"\n"); //append score to text file
+            }
+
+        }catch (IOException ioe){
+            System.err.println("IOException: "+ ioe.getMessage());
+        }
+        finally{
+            try{
+                fileWriter.close();
+            }catch (IOException ioe2){
+                System.err.println("IOException: "+ ioe2.getMessage());
+            }
+
+        }
+
+    }
+
     public void init(){
     }
 
@@ -50,17 +93,11 @@ public class LevelState implements GameState{
         player.update();
         tileMap.update();
         if(tileMap.isVictory()){
-            finishTime = System.currentTimeMillis();
-            score =  finishTime - startTime;;
-            gameStateControl.setScore(score);
-            System.out.println("Score: "+ score);
-            gameStateControl.setPaused(gameStateControl.getGameState());
-            gameStateControl.setGameState((GameStateControl.VICTORYSTATE));
+            victoryActions();
         }
         if(player.isDead()){
             gameStateControl.setPaused(gameStateControl.getGameState());
             gameStateControl.setGameState((GameStateControl.DEATHSTATE));
-
         }
 
         if(player.getX() < xmax || player.getX() > xmin){

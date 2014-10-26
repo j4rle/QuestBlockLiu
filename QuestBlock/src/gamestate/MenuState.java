@@ -19,6 +19,7 @@ public class MenuState implements GameState {
     protected int currentChoice = 0;
     protected String[] options;
     protected String headline = "";
+    protected String[] scoreboard = new String[0];
 
     public MenuState(GameStateControl gsc) {
         this.gameStateControl = gsc;
@@ -34,9 +35,10 @@ public class MenuState implements GameState {
     }
 
     public void draw(Graphics2D g) {
-        final int optionsCoordinate = 50;
-        final int optionScale = 30;
-        //font proterties
+        final int OPTIONCOORDINATE = 50;
+        final int OPTIONSCALE = 30;
+        final int SCOREBOARDY = 200;
+        //font properties
         g.setFont(font);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -44,9 +46,10 @@ public class MenuState implements GameState {
         //background
         this.background.draw(g);
 
+
         //headline
         g.setColor(Color.yellow);
-        g.drawString(headline, 100,100);
+        g.drawString(headline, OPTIONCOORDINATE,100);
 
 
         //options
@@ -58,7 +61,14 @@ public class MenuState implements GameState {
             else{
                 g.setColor(Color.GRAY);
             }
-            g.drawString(options[i], optionsCoordinate, GamePanel.HEIGHT - 100 + i * optionScale);
+            g.drawString(options[i], OPTIONCOORDINATE, GamePanel.HEIGHT - 100 + i * OPTIONSCALE);
+        }
+
+
+        //scoreboard
+        g.setColor(Color.white);
+        for (int i = 0; i < scoreboard.length; i++) {
+            g.drawString(scoreboard[i], OPTIONCOORDINATE, SCOREBOARDY + i * OPTIONSCALE);
         }
     }
 
