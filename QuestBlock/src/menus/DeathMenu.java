@@ -35,17 +35,17 @@ public class DeathMenu extends MenuState {
     @Override
     public void select() {
 
-        final int RESTART = 0;
-        final int MAINMENU = 1;
+        final int restart = 0;
+        final int mainMenu = 1;
 
         switch (currentChoice){
 
-            case RESTART:
+            case restart:
                 int currentPausedInt = gameStateControl.getPaused();
                 gameStateControl.setPaused(0);
                 gameStateControl.setGameState(currentPausedInt);
                 break;
-            case MAINMENU:
+            case mainMenu:
                 gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
                 break;
         }

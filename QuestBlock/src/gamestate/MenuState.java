@@ -35,9 +35,9 @@ public class MenuState implements GameState {
     }
 
     public void draw(Graphics2D g) {
-        final int OPTIONCOORDINATE = 50;
-        final int OPTIONSCALE = 30;
-        final int SCOREBOARDY = 200;
+        final int optioncoordinate = 50;
+        final int optionscale = 30;
+        final int scoreboardy = 200;
         //font properties
         g.setFont(font);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -49,7 +49,7 @@ public class MenuState implements GameState {
 
         //headline
         g.setColor(Color.yellow);
-        g.drawString(headline, OPTIONCOORDINATE,100);
+        g.drawString(headline, optioncoordinate,100);
 
 
         //options
@@ -61,14 +61,14 @@ public class MenuState implements GameState {
             else{
                 g.setColor(Color.GRAY);
             }
-            g.drawString(options[i], OPTIONCOORDINATE, GamePanel.HEIGHT - 100 + i * OPTIONSCALE);
+            g.drawString(options[i], optioncoordinate, GamePanel.HEIGHT - 100 + i * optionscale);
         }
 
 
         //scoreboard
         g.setColor(Color.white);
         for (int i = 0; i < scoreboard.length; i++) {
-            g.drawString(scoreboard[i], OPTIONCOORDINATE, SCOREBOARDY + i * OPTIONSCALE);
+            g.drawString(scoreboard[i], optioncoordinate, scoreboardy + i * optionscale);
         }
     }
 

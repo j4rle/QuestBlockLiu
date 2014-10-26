@@ -34,20 +34,20 @@ public class PauseMenu extends MenuState {
     @Override
     public void select() {
 
-        final int RESUME = 0;
-        final int RESTART = 1;
-        final int MAINMENU = 2;
+        final int resume = 0;
+        final int restart = 1;
+        final int mainmenu = 2;
 
         switch (currentChoice){
-            case RESUME:
+            case resume:
                 gameStateControl.setGameState(gameStateControl.getPaused());
                 break;
-            case RESTART:
+            case restart:
                 int currentPausedInt = gameStateControl.getPaused();
                 gameStateControl.setPaused(0);
                 gameStateControl.setGameState(currentPausedInt);
                 break;
-            case MAINMENU:
+            case mainmenu:
                 gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
                 break;
         }

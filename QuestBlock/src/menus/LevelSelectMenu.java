@@ -40,22 +40,22 @@ public class LevelSelectMenu extends MenuState {
 
     @Override
     public void select() {
-        final int LEVEL1 = 0;
-        final int LEVEL2 = 1;
-        final int RANDOMIZER = 2;
-        final int MAINMENU = 3;
+        final int level1 = 0;
+        final int level2 = 1;
+        final int randomizer = 2;
+        final int mainMenu = 3;
 
         switch (currentChoice){
-            case LEVEL1:
+            case level1:
                 gameStateControl.setGameState(GameStateControl.LEVEL1STATE);
                 break;
-            case LEVEL2:
+            case level2:
                 gameStateControl.setGameState(GameStateControl.LEVEL2STATE);
                 break;
-            case RANDOMIZER:
+            case randomizer:
                 gameStateControl.setGameState(GameStateControl.RANDOMIZERSTATE);
                 break;
-            case MAINMENU:
+            case mainMenu:
                 gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
                 break;
             default:
