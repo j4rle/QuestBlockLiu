@@ -36,6 +36,8 @@
     <entry_points version="2.0">
       <entry_point TYPE="field" FQNAME="gamestate.LevelState ymax" />
       <entry_point TYPE="field" FQNAME="gamestate.LevelState ymin" />
+      <entry_point TYPE="method" FQNAME="entities.Movable void update()" />
+      <entry_point TYPE="method" FQNAME="entities.Movable void draw(java.awt.Graphics2D g)" />
     </entry_points>
   </component>
   <component name="InspectionProjectProfileManager">

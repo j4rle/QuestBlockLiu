@@ -4,6 +4,10 @@ package tiles;
 import java.awt.*;
 
 @SuppressWarnings("MagicNumber") //"Magic numbers" here are color codes in RGB
+/**
+ * Tiles class for the game. These are the tiles that the player will interact with when playing. Constructed with a number of properties.
+ *
+ */
 public class Tile {
     private int tileSize;
     private TileType tileType;
@@ -21,11 +25,19 @@ public class Tile {
     private static final int STEPPEDONMAXCOUNT = 25;
     private static final int RESETMAXCOUNT = 150;
 
+    /**
+     * Constructs and initializes a Tile with the size tileSize
+     * @param tileSize tile size
+     * @param tileScaleX tile scaling in x-direction
+     * @param tileScaleY tile scaling in y-direction
+     * @param tileType type of tile
+     */
 
-    public Tile(int tilesize, int tileScaleX, int tileScaleY, TileType tileType) {
+
+    public Tile(int tileSize, int tileScaleX, int tileScaleY, TileType tileType) {
         this.tileScaleX = tileScaleX;
         this.tileScaleY = tileScaleY;
-        this.tileSize = tilesize;
+        this.tileSize = tileSize;
         this.tileType = tileType;
 
         switch(tileType){

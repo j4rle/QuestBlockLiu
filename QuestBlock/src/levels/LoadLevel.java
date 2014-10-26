@@ -13,9 +13,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * Loads a level based on what level was chosen in the menu
+ */
+@SuppressWarnings("RefusedBequest") //overrides method in superclass on purpose
 public class LoadLevel extends LevelState{
     protected LevelType levelChoice;
 
+    /**
+     *
+     * @param gameStateControl game state controller associated with the game
+     * @param levelChoice level choice the player made
+     */
     public LoadLevel(GameStateControl gameStateControl, LevelType levelChoice) {
         super(gameStateControl);
         this.levelChoice = levelChoice;
@@ -48,7 +57,7 @@ public class LoadLevel extends LevelState{
         switch (level){
             case RANDOMIZER:
                 if(gameStateControl.getPaused() != GameStateControl.RANDOMIZERSTATE) {
-                    System.out.println("randomizer not featured");
+                    initRandomizer();
                     break;
                 }
                 break;
@@ -87,7 +96,7 @@ public class LoadLevel extends LevelState{
                 filename = "lvl2hs.txt";
                 break;
             case RANDOMIZER:
-                System.out.println("randomizer not added");
+                filename = "rndmhs.txt";
                 break;
             default:
                 System.out.println("no highscore file found");
@@ -128,6 +137,16 @@ public class LoadLevel extends LevelState{
         this.tileMap = new TileMap("/level2.txt", tileSize);
 
         loadHighScores(LevelType.LEVEL2);
+        initPlayer();
+        cameraBounds();
+    }
+    private void initRandomizer(){
+        this.background = new Background("/lvl1background.png");
+        this.tileSize = GamePanel.HEIGHT / TILE_SCALE;
+        this.tileMap = new TileMap("/level2.txt", tileSize);
+        this.randomize = true;
+
+        loadHighScores(LevelType.RANDOMIZER);
         initPlayer();
         cameraBounds();
     }

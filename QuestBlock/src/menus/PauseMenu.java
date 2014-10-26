@@ -6,22 +6,19 @@ import tiles.Background;
 
 import java.awt.*;
 
-@SuppressWarnings("RefusedBequest")
-//Overriding methods in superclass is intentional
-//File.separator doesn't work for getResourceAsStream.
 
 /**
  * Pause menu for the game
  */
+@SuppressWarnings("RefusedBequest") //overrides methods in superclass on purpose
 public class PauseMenu extends MenuState {
 
-
     /**
-     *
-     * @param gsc game state control for the menu
+     * Pause menu for the game
+     * @param gameStateControl1 game state controller associated with the menu
      */
-    public PauseMenu(GameStateControl gsc) {
-        super(gsc);
+    public PauseMenu(GameStateControl gameStateControl1) {
+        super(gameStateControl1);
         init();
     }
 

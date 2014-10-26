@@ -7,16 +7,25 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
- * The panel where the game is drawn
- *
+ * Panel used to draw game.
  */
 public class GamePanel extends JPanel{
 
+    /**
+     * width of the window
+     */
 	public static final int WIDTH = 640;
+    /**
+     * height of the window
+     */
 	public static final int HEIGHT = 480;
 
 	private BufferedImage image;
 	private Graphics2D g;
+
+    /**
+     * Set some standard values and call the init() where game engine and key listener are initialized.
+     */
 
 	public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));

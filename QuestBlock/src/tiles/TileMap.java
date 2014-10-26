@@ -6,6 +6,8 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The class responsible for reading maps from files.
@@ -25,8 +27,8 @@ public class TileMap {
 	private int tileSize;
 	private TileType[][] map;
     private Tile[][] tiles = null;
-	private int mapWidth; //width of the map as read from the map file
-	private int mapHeight; //height of the map as read from the map file
+	private int mapWidth = 0; //width of the map as read from the map file
+	private int mapHeight = 0; //height of the map as read from the map file
 
     private int victoryRow = 0;
     private int victoryCol = 0;
@@ -46,11 +48,9 @@ public class TileMap {
 
     }
 
-    private void initTileMap(String s){
-        BufferedReader br = null;
-        try{
-            br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(s)));
-
+    private void initTileMap(String s) {
+        InputStreamReader inputStreamReader = new InputStreamReader(this.getClass().getResourceAsStream(s));
+        try (BufferedReader br = new BufferedReader(inputStreamReader)) {
             mapWidth = Integer.parseInt(br.readLine()); //reads first line
             mapHeight = Integer.parseInt(br.readLine()); //reads second line
 
@@ -59,7 +59,7 @@ public class TileMap {
 
             xmin = GamePanel.WIDTH - width;
             xmax = 0;
-            ymin = GamePanel.HEIGHT-height;
+            ymin = GamePanel.HEIGHT - height;
             ymax = 0;
 
             map = new TileType[mapHeight][mapWidth]; //map represented as array
@@ -75,7 +75,7 @@ public class TileMap {
                 String[] tokens = line.split(delimiter); //Splits the read line with the delimiter
                 for (int col = 0; col < mapWidth; col++) { //loop over columns
                     int numTile = Integer.parseInt(tokens[col]); //inserts the parsed int array into the correct column
-                    switch(numTile){
+                    switch (numTile) {
                         case 0:
                             tileType = TileType.TYPE1;
                             break;
@@ -95,20 +95,14 @@ public class TileMap {
                             tileType = TileType.WATERTILE;
                             break;
                     }
-                    map[row][col]= tileType; //insert TileType-Enum in map-array for every tile
+                    map[row][col] = tileType; //insert TileType-Enum in map-array for every tile
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            try {
-                if(br != null){
-                    br.close();
-                }
-            }catch (IOException e){
-                e.printStackTrace();
-            }
         }
+
     }
 
     private void initTiles() {
@@ -121,9 +115,19 @@ public class TileMap {
                     victoryRow = row;
                     victoryCol = col;
                 }
-
             }
         }
+    }
+
+    public void randomize(){
+        Random rnd = new Random();
+        int rndCol = rnd.nextInt(mapWidth-2)+1;
+        int rndRow = rnd.nextInt(mapHeight-2)+1;
+
+        TileType tileType = TileType.getRandom();
+        map[rndRow][rndCol] = tileType;
+        tiles[rndRow][rndCol] = new Tile(tileSize, rndCol * tileSize, y + rndRow * tileSize, tileType);
+
     }
 
 

@@ -7,8 +7,16 @@ import tiles.Background;
 
 import java.awt.*;
 
+/**
+ * Death menu for the game
+ */
+@SuppressWarnings("RefusedBequest") //overrides methods in superclass on purpose
 public class DeathMenu extends MenuState {
 
+    /**
+     * Menu that shows up when player dies
+     * @param gsc game state controller associated with the menu
+     */
     public DeathMenu(GameStateControl gsc) {
         super(gsc);
         init();
@@ -20,7 +28,7 @@ public class DeathMenu extends MenuState {
         this.currentChoice = 0;
         this.background = new Background("/lvl1background.png");
         this.font = new Font("Century Gothic", Font.PLAIN, fontsize);
-        this.headline = "You died!";
+        this.headline = "You died! Try avoiding the water next time.";
         this.options = new String[] {"Restart level","Main Menu"};
     }
 

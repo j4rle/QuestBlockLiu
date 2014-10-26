@@ -6,23 +6,19 @@ import tiles.Background;
 
 import java.awt.*;
 
-@SuppressWarnings({"RefusedBequest", "HardcodedFileSeparator"})
-//magic numbers used as the game doesn't scale with monitor size.
-//Overriding methods in superclass is intentional
-//File.separator doesn't work for getResourceAsStream.
-
 
 /**
- * The menu for selecting level
+ * Level select menu for the game. Associated with a game state controller
  */
+@SuppressWarnings("RefusedBequest") //Override methods from superclass on purpose
 public class LevelSelectMenu extends MenuState {
 
     /**
      *
-     * @param gsc game state control for the menu
+     * @param gameStateControl1 game state controller for the menu
      */
-    public LevelSelectMenu(GameStateControl gsc) {
-        super(gsc);
+    public LevelSelectMenu(GameStateControl gameStateControl1) {
+        super(gameStateControl1);
         init();
     }
 
@@ -32,7 +28,7 @@ public class LevelSelectMenu extends MenuState {
         this.currentChoice = 0;
         background = new Background("/lvl1background.png");
         this.font = new Font("Century Gothic", Font.PLAIN, fontsize);
-        this.options = new String[] {"Level 1","Level 2","Randomizer","Main Menu"};
+        this.options = new String[] {"Level 1","Level 2","Randomizer(beta)","Main Menu"};
     }
 
     @Override
@@ -61,6 +57,10 @@ public class LevelSelectMenu extends MenuState {
                 break;
             case MAINMENU:
                 gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
+                break;
+            default:
+                gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
+                break;
         }
     }
 }

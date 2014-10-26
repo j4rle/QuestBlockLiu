@@ -8,7 +8,7 @@ import tiles.Background;
 
 import java.awt.*;
 
-@SuppressWarnings({"RefusedBequest", "HardcodedFileSeparator"})
+@SuppressWarnings("ALL")
 //all "magic numbers" are explained through variable name
 //Overriding methods in superclass is intentional
 //File.separator doesn't work for getResourceAsStream.
@@ -25,11 +25,11 @@ public class MainMenu extends MenuState {
 	private String[] helpText = {"Reach the green block in","as little time as possible", "without drowning!"};
 
     /**
-     *
-     * @param gsc game state control for the menu
+     * The main menu of the game
+     * @param gameStateControl1 game state controller associated with the game
      */
-	public MainMenu(GameStateControl gsc) {
-		super(gsc);
+	public MainMenu(GameStateControl gameStateControl1) {
+		super(gameStateControl1);
 		init();
 	}
 

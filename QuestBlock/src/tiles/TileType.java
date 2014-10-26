@@ -1,5 +1,36 @@
 package tiles;
 
+/**
+ * Different types of tiles in the game
+ */
 public enum TileType {
-    TYPE1,OUTSIDE,FALLTILE,NONE,VICTORYTILE,WATERTILE
+    /**
+     * Type 1 tile
+     */
+    TYPE1,
+    /**
+     * Outside tile
+     */
+    OUTSIDE,
+    /**
+     * falling tile
+     */
+    FALLTILE,
+    /**
+     * no tile
+     */
+    NONE,
+    /**
+     * tile that causes victory when stepped on
+     */
+    VICTORYTILE,
+    /**
+     * water tile
+     */
+    WATERTILE;
+
+    public static TileType getRandom(){
+        return values()[(int)(Math.random() * values().length)];
+    }
+
 }

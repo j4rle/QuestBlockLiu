@@ -8,12 +8,19 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Scanner;
 
+/**
+ * Game engine for the game. Run with a Timer.
+ */
 public class GameEngine extends KeyAdapter {
     private GameStateControl gsc;
     private GamePanel gamePanel;
 
     protected static final int LOGIC_DELAY_IN_MS = 15;
 
+    /**
+     * Game engine for the game. Writes to a panel at a frequent rate
+     * @param gamePanel The panel the game engine draws to
+     */
     public GameEngine(GamePanel gamePanel) {
         this.gsc = new GameStateControl();
         this.gamePanel = gamePanel;
@@ -33,10 +40,12 @@ public class GameEngine extends KeyAdapter {
 
     public void init(){
 
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Enter your name:");
-        String playerName = reader.next();
-        gsc.setPlayerName(playerName);
+        try(Scanner reader = new Scanner(System.in)){
+            System.out.println("Enter your name:");
+            String playerName = reader.next();
+            gsc.setPlayerName(playerName);
+        }
+
 
         final Action doOneLogic = new AbstractAction() {
             @Override

@@ -2,9 +2,17 @@ package game;
 
 import java.util.*;
 
+/**
+ * Class that stores game scores as objects
+ */
 public class HighScore implements Comparable<HighScore>{
     private String name;
     private int score;
+
+    /**
+     * @param name name of player
+     * @param score score achieved
+     */
 
     public HighScore(String name, int score) {
         this.name = name;
@@ -21,9 +29,8 @@ public class HighScore implements Comparable<HighScore>{
 
 
     public int compareTo(HighScore highScore){
-        return name.compareTo(highScore.getName());
+        return name.compareTo(highScore.name);
     }
-
 
     public String toString(){
         return name + " : " + score;

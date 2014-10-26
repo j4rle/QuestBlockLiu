@@ -5,12 +5,10 @@ import tiles.TileMap;
 
 import java.awt.*;
 
-@SuppressWarnings({"AssignmentToSuperclassField", "MagicNumber"})
-//"magic numbers" are actually values for a color
-//Assignments to fields in super class used to
 /**
  * The main player in the game. Controlled by keyboard.
  */
+@SuppressWarnings("MagicNumber") //Magic numbers are actually RGB colors
 public class Player extends Movable {
 
     protected boolean left;
@@ -25,30 +23,12 @@ public class Player extends Movable {
 
 
     /**
-     *
-     * @param tm tileMap that should be used
+     * Player that moves around on the map
+     * @param tm which tileMap that should be used
      * @param size Size of the player
      */
 	public Player(TileMap tm, int size) {
-        //player properties
-		this.tileMap = tm;
-        this.playerColor = new Color(255,0,0,90);
-
-        //size
-		this.width = size;
-		this.height = size;
-
-        //movement
-		this.moveSpeed = 0.5;
-        this.maxSpeed = 5.1;
-        this.maxFallingSpeed = 100;
-        this.stopSpeed = 0.40;
-        this.jumpStart = -8.0;
-        this.gravity = 0.30;
-        this.slidingSpeed = 3.5;
-
-        this.drowningCounter = 0;
-        this.drowningTimer = 100;
+        super(tm,new Color(255,0,0,90),size,size,0,100,3.5,0.3,-8.0,0.4,100,5.1,0.5);
 
 	}
 
@@ -157,40 +137,38 @@ public class Player extends Movable {
         }
     }
 
-	public void update(){
+	public void update(){ //extensive check of player position/actions/colliding. Most checks should be self explanatory from the variable names
 
-        if(drowningCounter > drowningTimer){
+        if(drowningCounter > drowningTimer){ //player has drowned
             dead = true;
         }
 
-        if(sprinting){
+        if(sprinting){ //player is sprinting
             maxSpeed = 10;
             moveSpeed = 0.6;
         }
-        if(!sprinting){
+        if(!sprinting){ //player not sprinting
             maxSpeed = 5.1;
             moveSpeed = 0.5;
         }
-        if(!sliding){
+        if(!sliding){ //player not sliding
             maxFallingSpeed = 100;
         }
-		if(sliding){
+		if(sliding){ //player sliding
 			maxFallingSpeed = slidingSpeed;
 		}
-		else{
-			maxFallingSpeed = 100;
-		}
+
 		//calculate next position
 		if(left){//accelerates/moves left
 			dx -= moveSpeed;
 			if(dx < -maxSpeed){
-				dx = -maxSpeed;
+				dx = -maxSpeed; //stops player acceleration if maxSpeed is reached
 			}
 		} //accelerates/moves right
 		else if(right){
 			dx += moveSpeed;
 			if(dx > maxSpeed){
-				dx = maxSpeed;
+				dx = maxSpeed; //stops player acceleration if maxSpeed is reached
 			}
 		}
 		else { //slows down to a stop
@@ -299,9 +277,9 @@ public class Player extends Movable {
 
 
 		g.setColor(playerColor);
-		g.fillRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3);
+		g.fillRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3); //player fill
 		g.setColor(Color.WHITE);
-		g.drawRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3);
+		g.drawRect(((int) (tx + x - width / 2))+1, ((int) (ty + y - height / 2))+1, width-3, height-3); //player white outline
 	}
 
 }

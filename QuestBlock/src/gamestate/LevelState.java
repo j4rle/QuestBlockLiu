@@ -3,8 +3,6 @@ package gamestate;
 import entities.Player;
 import game.GamePanel;
 import game.HighScore;
-import levels.LevelType;
-import menus.VictoryMenu;
 import tiles.Background;
 import tiles.TileMap;
 
@@ -36,6 +34,7 @@ public class LevelState implements GameState{
     protected long startTime = -1;
     protected long finishTime = -1;
     protected String filename = "";
+    protected boolean randomize = false;
 
     protected static final int TILE_SCALE = 12;
     protected int tileSize;
@@ -54,7 +53,6 @@ public class LevelState implements GameState{
         finishTime = System.currentTimeMillis();
         score = (int)(finishTime - startTime);
         gameStateControl.setScore(score);
-        FileWriter fileWriter = null;
 
 
         HighScore playerScore = new HighScore(gameStateControl.getPlayerName(),score);
@@ -64,26 +62,14 @@ public class LevelState implements GameState{
         gameStateControl.setGameState((GameStateControl.VICTORYSTATE));
 
 
-        try{
-            ClassLoader classloader = getClass().getClassLoader();
-            URL url = classloader.getResource(filename);
-            if (url != null){
-                fileWriter= new FileWriter(url.getFile(), true);
+        ClassLoader classloader = getClass().getClassLoader();
+        URL url = classloader.getResource(filename);
+        assert url != null;
+        try(FileWriter fileWriter = new FileWriter(url.getFile(), true)){
                 fileWriter.write(playerScore.getName()+":"+playerScore.getScore()+"\n"); //append score to text file
-            }
-
         }catch (IOException ioe){
             System.err.println("IOException: "+ ioe.getMessage());
         }
-        finally{
-            try{
-                fileWriter.close();
-            }catch (IOException ioe2){
-                System.err.println("IOException: "+ ioe2.getMessage());
-            }
-
-        }
-
     }
 
     public void init(){
@@ -92,6 +78,9 @@ public class LevelState implements GameState{
     public void update() {
         player.update();
         tileMap.update();
+        if(randomize){
+            tileMap.randomize();
+        }
         if(tileMap.isVictory()){
             victoryActions();
         }

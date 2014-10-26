@@ -1,19 +1,24 @@
 package menus;
 
 
-import game.HighScore;
 import gamestate.GameStateControl;
 import gamestate.MenuState;
 import tiles.Background;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
 
+/**
+ * menu that appears when player finished a level
+ */
+@SuppressWarnings("RefusedBequest") //overrides methods in superclass on purpose
 public class VictoryMenu extends MenuState {
 
-    public VictoryMenu(GameStateControl gsc) {
-        super(gsc);
+    /**
+     *
+     * @param gameStateControl1 game state controller associated with the menu
+     */
+    public VictoryMenu(GameStateControl gameStateControl1) {
+        super(gameStateControl1);
         init();
     }
 
@@ -29,12 +34,7 @@ public class VictoryMenu extends MenuState {
         scoreboard = new String[3];
         gameStateControl.sortHighscores();
         for (int i = 0; i < 3; i++) {
-            String temp = "";
-            temp += i+1+ ": ";
-            temp += gameStateControl.getName(i) + " - ";
-            temp += gameStateControl.getScore(i);
-
-            scoreboard[i] = temp;
+            scoreboard[i] = (i + 1) + ": " + gameStateControl.getName(i) + " - " + gameStateControl.getScore(i);
         }
     }
 

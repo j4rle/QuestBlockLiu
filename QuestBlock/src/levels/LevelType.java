@@ -1,8 +1,19 @@
 package levels;
 
 /**
- * Enum for the different types of levels available in the game. Used for start/pause functions in menus.
+ * different types of levels
  */
 public enum LevelType {
-    LEVEL1,LEVEL2,RANDOMIZER
+    /**
+     * Level 1
+     */
+    LEVEL1,
+    /**
+     * Level 2
+     */
+    LEVEL2,
+    /**
+     * Randomize
+     */
+    RANDOMIZER
 }

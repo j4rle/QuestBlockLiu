@@ -21,14 +21,37 @@ public class GameStateControl {
     private long score = 0;
     private String playerName ="";
     private java.util.List<HighScore> highScoreList = new ArrayList<>();
-
+    /**
+     * main menu of the game, index 0 in array
+     */
 	public static final int MAINMENUSTATE = 0;
+    /**
+     * pause menu of the game, index 1 in array
+     */
 	public static final int PAUSESTATE = 1;
+    /**
+     * level select menu of the game, index 2 in array
+     */
 	public static final int LEVELSELECT = 2;
+    /**
+     * level 1 of the game, index 3 in array
+     */
 	public static final int LEVEL1STATE = 3;
+    /**
+     * level 2 of the game, index 4 in array
+     */
 	public static final int LEVEL2STATE = 4;
+    /**
+     * randomizing level of the game, index 5 in array
+     */
 	public static final int RANDOMIZERSTATE = 5;
+    /**
+     * victory menu of the game, index 6 in array
+     */
 	public static final int VICTORYSTATE = 6;
+    /**
+     * death menu of the game, index 7 in array
+     */
 	public static final int DEATHSTATE = 7;
 
 	public GameStateControl(){
