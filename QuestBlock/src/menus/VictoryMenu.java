@@ -31,11 +31,14 @@ public class VictoryMenu extends MenuState {
         this.headline = "VICTORY! Your score was: " + gameStateControl.getScore();
         this.options = new String[]{"Restart level", "Main Menu"};
 
-        scoreboard = new String[3];
-        gameStateControl.sortHighscores();
-        for (int i = 0; i < 3; i++) {
-            scoreboard[i] = (i + 1) + ": " + gameStateControl.getName(i) + " - " + gameStateControl.getScore(i);
+        if(gameStateControl.getHighscoreCount()>=3){
+            scoreboard = new String[3];
+            gameStateControl.sortHighscores();
+            for (int i = 0; i < 3; i++) {
+                scoreboard[i] = (i + 1) + ": " + gameStateControl.getName(i) + " - " + gameStateControl.getScore(i);
+            }
         }
+
     }
 
     @Override

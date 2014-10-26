@@ -4,6 +4,7 @@ package tiles;
 import java.awt.*;
 
 @SuppressWarnings("MagicNumber") //"Magic numbers" here are color codes in RGB
+
 /**
  * Tiles class for the game. These are the tiles that the player will interact with when playing. Constructed with a number of properties.
  *

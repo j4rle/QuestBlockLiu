@@ -72,6 +72,10 @@ public class GameStateControl {
         gameStates.add(new DeathMenu(this));
 	}
 
+    public int getHighscoreCount(){
+        return highScoreList.size();
+    }
+
     public void sortHighscores(){
         Collections.sort(highScoreList, new HighScore.ScoreComparator());
     }
