@@ -21,7 +21,7 @@ public class GamePanel extends JPanel{
 	public static final int HEIGHT = 480;
 
 	private BufferedImage image;
-	private Graphics2D g;
+	private Graphics2D graphics;
 
     /**
      * Set some standard values and call the init() where game engine and key listener are initialized.
@@ -32,20 +32,20 @@ public class GamePanel extends JPanel{
 		setFocusable(true);
 		requestFocus();
         this.image = null;
-        this.g = null;
+        this.graphics = null;
         init();
 	}
 
     public void init(){
 		this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		this.g = (Graphics2D) image.getGraphics();
+		this.graphics = (Graphics2D) image.getGraphics();
         GameEngine gameEngine = new GameEngine(this);
         addKeyListener(gameEngine);
 	}
 
 
 	public void render(GameStateControl gameStateControl){
-		gameStateControl.draw(g);
+		gameStateControl.draw(graphics);
 	}
 
 	public void draw(){

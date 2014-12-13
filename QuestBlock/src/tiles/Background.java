@@ -19,10 +19,10 @@ public class Background {
 	private double dx;
 	private double dy;
 
-	public Background(String s){
+	public Background(String filename){
         this.image = null;
 		try{
-			this.image = ImageIO.read(getClass().getResourceAsStream(s));
+			this.image = ImageIO.read(getClass().getResourceAsStream(filename));
 		} catch (IOException e) {
             e.printStackTrace();
         }

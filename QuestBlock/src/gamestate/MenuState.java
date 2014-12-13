@@ -21,8 +21,8 @@ public class MenuState implements GameState {
     protected String headline = "";
     protected String[] scoreboard = new String[0];
 
-    public MenuState(GameStateControl gsc) {
-        this.gameStateControl = gsc;
+    public MenuState(GameStateControl gameStateControl1) {
+        this.gameStateControl = gameStateControl1;
         this.background = null;
         this.font = null;
         this.options = null;
@@ -34,41 +34,41 @@ public class MenuState implements GameState {
     public void update() {
     }
 
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D graphics) {
         final int optioncoordinate = 50;
         final int optionscale = 30;
         final int scoreboardy = 200;
         //font properties
-        g.setFont(font);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics.setFont(font);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
         //background
-        this.background.draw(g);
+        this.background.draw(graphics);
 
 
         //headline
-        g.setColor(Color.yellow);
-        g.drawString(headline, optioncoordinate,100);
+        graphics.setColor(Color.yellow);
+        graphics.drawString(headline, optioncoordinate, 100);
 
 
         //options
 
         for (int i = 0; i < options.length; i++) {
             if(i == currentChoice){
-                g.setColor(Color.white);
+                graphics.setColor(Color.white);
             }
             else{
-                g.setColor(Color.GRAY);
+                graphics.setColor(Color.GRAY);
             }
-            g.drawString(options[i], optioncoordinate, GamePanel.HEIGHT - 100 + i * optionscale);
+            graphics.drawString(options[i], optioncoordinate, GamePanel.HEIGHT - 100 + i * optionscale);
         }
 
 
         //scoreboard
-        g.setColor(Color.white);
+        graphics.setColor(Color.white);
         for (int i = 0; i < scoreboard.length; i++) {
-            g.drawString(scoreboard[i], optioncoordinate, scoreboardy + i * optionscale);
+            graphics.drawString(scoreboard[i], optioncoordinate, scoreboardy + i * optionscale);
         }
     }
 

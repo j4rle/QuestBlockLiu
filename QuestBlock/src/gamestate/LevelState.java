@@ -96,10 +96,10 @@ public class LevelState implements GameState{
         }
     }
 
-    public void draw(Graphics2D g) {
-        background.draw(g);
-        tileMap.draw(g);
-        player.draw(g);
+    public void draw(Graphics2D graphics) {
+        background.draw(graphics);
+        tileMap.draw(graphics);
+        player.draw(graphics);
 
     }
 

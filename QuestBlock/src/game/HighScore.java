@@ -37,9 +37,9 @@ public class HighScore implements Comparable<HighScore>{
     }
 
     public static class ScoreComparator implements Comparator<HighScore>{
-        public int compare(HighScore h1, HighScore h2){
-            int score1 = h1.getScore();
-            int score2 = h2.getScore();
+        public int compare(HighScore highScore1, HighScore highScore2){
+            int score1 = highScore1.getScore();
+            int score2 = highScore2.getScore();
 
             if(score1 == score2){
                 return 0;

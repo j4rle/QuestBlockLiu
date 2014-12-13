@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Game engine for the game. Run with a Timer.
  */
 public class GameEngine extends KeyAdapter {
-    private GameStateControl gsc;
+    private GameStateControl gameStateControl;
     private GamePanel gamePanel;
 
     protected static final int LOGIC_DELAY_IN_MS = 15;
@@ -22,19 +22,19 @@ public class GameEngine extends KeyAdapter {
      * @param gamePanel The panel the game engine draws to
      */
     public GameEngine(GamePanel gamePanel) {
-        this.gsc = new GameStateControl();
+        this.gameStateControl = new GameStateControl();
         this.gamePanel = gamePanel;
         init();
     }
 
     public void keyPressed(KeyEvent e) {
         super.keyPressed(e);
-        gsc.keyPressed(e.getKeyCode());
+        gameStateControl.keyPressed(e.getKeyCode());
     }
 
     public void keyReleased(KeyEvent e) {
         super.keyReleased(e);
-        gsc.keyReleased(e.getKeyCode());
+        gameStateControl.keyReleased(e.getKeyCode());
     }
 
 
@@ -43,7 +43,7 @@ public class GameEngine extends KeyAdapter {
         try(Scanner reader = new Scanner(System.in)){
             System.out.println("Enter your name:");
             String playerName = reader.next();
-            gsc.setPlayerName(playerName);
+            gameStateControl.setPlayerName(playerName);
         }
 
 
@@ -63,10 +63,10 @@ public class GameEngine extends KeyAdapter {
     }
 
     private void update(){
-        gsc.update();
+        gameStateControl.update();
     }
     private void render(){
-        gamePanel.render(gsc);
+        gamePanel.render(gameStateControl);
     }
 
 }

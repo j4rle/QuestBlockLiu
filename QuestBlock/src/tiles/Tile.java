@@ -102,13 +102,13 @@ public class Tile {
     }
 
 
-    public void draw(Graphics2D g,int x,int y){
+    public void draw(Graphics2D graphics,int tileXCoordinate,int tileYCoordinate){
         if(!hidden){
-            g.setColor(tileColor);
-            g.fillRect(x + tileScaleX, y + tileScaleY, tileSize, tileSize);
+            graphics.setColor(tileColor);
+            graphics.fillRect(tileXCoordinate + tileScaleX, tileYCoordinate + tileScaleY, tileSize, tileSize);
             //tile border
-            g.setColor(Color.WHITE);
-            g.drawRect(x + tileScaleX, y + tileScaleY, tileSize, tileSize);
+            graphics.setColor(Color.WHITE);
+            graphics.drawRect(tileXCoordinate + tileScaleX, tileYCoordinate + tileScaleY, tileSize, tileSize);
         }
         if(tileType == TileType.FALLTILE){
             if(!steppedOn){

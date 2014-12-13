@@ -1,6 +1,7 @@
 package menus;
 
 
+import gamestate.EndType;
 import gamestate.GameStateControl;
 import gamestate.MenuState;
 import tiles.Background;
@@ -8,22 +9,39 @@ import tiles.Background;
 import java.awt.*;
 
 /**
- * menu that appears when player finished a level
+ * Menu that appears when the player has finished a game
  */
-@SuppressWarnings("RefusedBequest") //overrides methods in superclass on purpose
-public class VictoryMenu extends MenuState {
+@SuppressWarnings("RefusedBequest")//Intentional as we want to override functions in superclass
+public class EndMenu extends MenuState{
+    private EndType endType;
 
     /**
-     *
-     * @param gameStateControl1 game state controller associated with the menu
+     * Creates end menu based on the outcome of a game
+     * @param gameStateControl1 game state control associated with game
+     * @param endType if the player finished the level or died
      */
-    public VictoryMenu(GameStateControl gameStateControl1) {
+    public EndMenu(GameStateControl gameStateControl1, EndType endType) {
         super(gameStateControl1);
+        this.endType = endType;
         init();
     }
 
-    @Override
-    public void init() {
+    public void init(){
+        switch (endType){
+            case VICTORY:
+                victoryInit();
+                break;
+            case DEATH:
+                deathInit();
+                break;
+            default:
+                deathInit();
+                break;
+        }
+
+    }
+
+    private void victoryInit(){
         final int fontsize = 24;
         this.currentChoice = 0;
         this.background = new Background("/lvl1background.png");
@@ -38,7 +56,15 @@ public class VictoryMenu extends MenuState {
                 scoreboard[i] = (i + 1) + ": " + gameStateControl.getName(i) + " - " + gameStateControl.getScore(i);
             }
         }
+    }
 
+    private void deathInit(){
+        final int fontsize = 24;
+        this.currentChoice = 0;
+        this.background = new Background("/lvl1background.png");
+        this.font = new Font("Century Gothic", Font.PLAIN, fontsize);
+        this.headline = "You died! Try avoiding the water next time.";
+        this.options = new String[] {"Restart level","Main Menu"};
     }
 
     @Override
@@ -59,4 +85,5 @@ public class VictoryMenu extends MenuState {
                 break;
         }
     }
+
 }

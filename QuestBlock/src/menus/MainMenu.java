@@ -52,32 +52,32 @@ public class MainMenu extends MenuState {
 	}
 
     @Override
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D graphics) {
         final int optionscoordinate = 50;
         final int optionscale = 30;
 
 		//Background
-		background.draw(g);
+		background.draw(graphics);
 
 		//Menu options
-		g.setFont(font);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		graphics.setFont(font);
+		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		for (int i = 0; i < options.length; i++) {
 			if(i == currentChoice){
-				g.setColor(Color.white);
+				graphics.setColor(Color.white);
 			}
 			else{
-				g.setColor(Color.GRAY);
+				graphics.setColor(Color.GRAY);
 			}
-			g.drawString(options[i], optionscoordinate, GamePanel.HEIGHT - 100 + i * optionscale);
+			graphics.drawString(options[i], optionscoordinate, GamePanel.HEIGHT - 100 + i * optionscale);
 		}
 
 		//help instructions
 		if(help) {
 			for (int i = 0; i < helpText.length; i++) {
-				g.setColor(Color.white);
-				g.drawString(helpText[i], GamePanel.WIDTH/3,  GamePanel.HEIGHT - 100 + i * optionscale);
+				graphics.setColor(Color.white);
+				graphics.drawString(helpText[i], GamePanel.WIDTH/3,  GamePanel.HEIGHT - 100 + i * optionscale);
 			}
 		}
 	}

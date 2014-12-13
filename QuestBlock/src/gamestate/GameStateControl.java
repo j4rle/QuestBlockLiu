@@ -68,8 +68,8 @@ public class GameStateControl {
         gameStates.add(new LoadLevel(this, LevelType.RANDOMIZER)); //randomization-level
 
         //victory screen
-        gameStates.add(new VictoryMenu(this));
-        gameStates.add(new DeathMenu(this));
+        gameStates.add(new EndMenu((this), EndType.VICTORY));
+        gameStates.add(new EndMenu((this), EndType.DEATH));
 	}
 
     public int getHighscoreCount(){
@@ -132,15 +132,15 @@ public class GameStateControl {
 	public void update(){
 		gameStates.get(currentState).update();
 	}
-	public void draw(Graphics2D g){
-		gameStates.get(currentState).draw(g);
+	public void draw(Graphics2D graphics){
+		gameStates.get(currentState).draw(graphics);
 	}
 
-	public void keyPressed(int k){
-		gameStates.get(currentState).keyPressed(k);
+	public void keyPressed(int key){
+		gameStates.get(currentState).keyPressed(key);
 	}
-	public void keyReleased(int k){
-		gameStates.get(currentState).keyReleased(k);
+	public void keyReleased(int key){
+		gameStates.get(currentState).keyReleased(key);
 	}
 
 }
