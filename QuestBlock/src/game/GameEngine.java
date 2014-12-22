@@ -40,10 +40,13 @@ public class GameEngine extends KeyAdapter {
 
     public void init(){
 
-        try(Scanner reader = new Scanner(System.in)){
-            System.out.println("Enter your name:");
-            String playerName = reader.next();
-            gameStateControl.setPlayerName(playerName);
+
+        if(false){
+            try(Scanner reader = new Scanner(System.in)){
+                System.out.println("Enter your name:");
+                String playerName = reader.next();
+                gameStateControl.setPlayerName(playerName);
+            }
         }
 
 

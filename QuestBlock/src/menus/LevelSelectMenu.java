@@ -2,6 +2,7 @@ package menus;
 
 import gamestate.GameStateControl;
 import gamestate.MenuState;
+import levels.LevelType;
 import tiles.Background;
 
 import java.awt.*;
@@ -47,19 +48,19 @@ public class LevelSelectMenu extends MenuState {
 
         switch (currentChoice){
             case level1:
-                gameStateControl.setGameState(GameStateControl.LEVEL1STATE);
+                gameStateControl.setGameState(LevelType.LEVEL1);
                 break;
             case level2:
-                gameStateControl.setGameState(GameStateControl.LEVEL2STATE);
+                gameStateControl.setGameState(LevelType.LEVEL2);
                 break;
             case randomizer:
-                gameStateControl.setGameState(GameStateControl.RANDOMIZERSTATE);
+                gameStateControl.setGameState(LevelType.RANDOMIZER);
                 break;
             case mainMenu:
-                gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
+                gameStateControl.setGameState(LevelType.MAINMENU);
                 break;
             default:
-                gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
+                gameStateControl.setGameState(LevelType.MAINMENU);
                 break;
         }
     }

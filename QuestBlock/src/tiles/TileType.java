@@ -29,6 +29,7 @@ public enum TileType {
      */
     WATERTILE;
 
+    //Returns a random tile type
     public static TileType getRandom(){
         return values()[(int)(Math.random() * values().length)];
     }

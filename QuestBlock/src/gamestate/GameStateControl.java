@@ -12,64 +12,33 @@ import java.util.List;
 /**
  * Keeps track on which state the game is in. Can be several states, where the biggest difference is between the various menustates and levelstates.
  */
-//The different states don't need further documentation
 public class GameStateControl {
 
-	private List<GameState> gameStates;
-	private int currentState = 0;
-    private int currentPaused = 0;
+    //containers
+    private TreeMap<LevelType, GameState> gameStates = new TreeMap<>(); //map of the different game states in the game
+	private LevelType currentState = LevelType.MAINMENU; //keep track of the current active level
+    private LevelType currentPaused = LevelType.MAINMENU; //keep track of paused level
+    private List<HighScore> highScoreList = new ArrayList<>();
+
+    //player info
     private long score = 0;
-    private String playerName ="";
-    private java.util.List<HighScore> highScoreList = new ArrayList<>();
-    /**
-     * main menu of the game, index 0 in array
-     */
-	public static final int MAINMENUSTATE = 0;
-    /**
-     * pause menu of the game, index 1 in array
-     */
-	public static final int PAUSESTATE = 1;
-    /**
-     * level select menu of the game, index 2 in array
-     */
-	public static final int LEVELSELECT = 2;
-    /**
-     * level 1 of the game, index 3 in array
-     */
-	public static final int LEVEL1STATE = 3;
-    /**
-     * level 2 of the game, index 4 in array
-     */
-	public static final int LEVEL2STATE = 4;
-    /**
-     * randomizing level of the game, index 5 in array
-     */
-	public static final int RANDOMIZERSTATE = 5;
-    /**
-     * victory menu of the game, index 6 in array
-     */
-	public static final int VICTORYSTATE = 6;
-    /**
-     * death menu of the game, index 7 in array
-     */
-	public static final int DEATHSTATE = 7;
+    private String playerName ="default";
 
 	public GameStateControl(){
-		gameStates = new ArrayList<>();
 
         //menus
-		gameStates.add(new MainMenu(this));
-        gameStates.add(new PauseMenu(this));
-        gameStates.add(new LevelSelectMenu(this));
+        gameStates.put(LevelType.MAINMENU, new MainMenu(this));
+        gameStates.put(LevelType.PAUSE, new PauseMenu(this));
+        gameStates.put(LevelType.LEVELSELECT, new LevelSelectMenu(this));
 
         //levels
-		gameStates.add(new LoadLevel(this, LevelType.LEVEL1)); //level 1
-        gameStates.add(new LoadLevel(this, LevelType.LEVEL2)); //level 2
-        gameStates.add(new LoadLevel(this, LevelType.RANDOMIZER)); //randomization-level
+        gameStates.put(LevelType.LEVEL1, new LoadLevel(this, LevelType.LEVEL1)); //level 1
+        gameStates.put(LevelType.LEVEL1, new LoadLevel(this, LevelType.LEVEL2)); //level 2
+        gameStates.put(LevelType.RANDOMIZER, new LoadLevel(this, LevelType.RANDOMIZER)); //randomize-level
 
         //victory screen
-        gameStates.add(new EndMenu((this), EndType.VICTORY));
-        gameStates.add(new EndMenu((this), EndType.DEATH));
+        gameStates.put(LevelType.VICTORY, new EndMenu((this), LevelType.VICTORY));
+        gameStates.put(LevelType.DEATH, new EndMenu((this), LevelType.DEATH));
 	}
 
     public int getHighscoreCount(){
@@ -112,20 +81,20 @@ public class GameStateControl {
         return score;
     }
 
-    public int getGameState(){
+    public LevelType getGameState(){
         return currentState;
     }
 
-    public int getPaused(){
+    public LevelType getPaused(){
         return currentPaused;
     }
 
-	public void setGameState(int state){
+	public void setGameState(LevelType state){
 		currentState = state;
 		gameStates.get(currentState).init();
 	}
 
-    public void setPaused(int state){
+    public void setPaused(LevelType state){
         currentPaused = state;
     }
 

@@ -137,23 +137,30 @@ public class Player extends Movable {
         }
     }
 
-	public void update(){ //extensive check of player position/actions/colliding. Most checks should be self explanatory from the variable names
+	// Keeps tile map updated(useful when randomizing level)
+	public void updateMap(TileMap tileMap){
+		this.tileMap = tileMap;
 
-        if(drowningCounter > drowningTimer){ //player has drowned
-            dead = true;
-        }
+	}
 
-        if(sprinting){ //player is sprinting
-            maxSpeed = 10;
-            moveSpeed = 0.6;
-        }
-        if(!sprinting){ //player not sprinting
-            maxSpeed = 5.1;
-            moveSpeed = 0.5;
-        }
-        if(!sliding){ //player not sliding
-            maxFallingSpeed = 100;
-        }
+	//extensive check of player position/actions/colliding
+	public void update(){
+
+		if(drowningCounter > drowningTimer){ //player has drowned
+			dead = true;
+		}
+
+		if(sprinting){ //player is sprinting
+			maxSpeed = 10;
+			moveSpeed = 0.6;
+		}
+		if(!sprinting){ //player not sprinting
+			maxSpeed = 5.1;
+			moveSpeed = 0.5;
+		}
+		if(!sliding){ //player not sliding
+			maxFallingSpeed = 100;
+		}
 		if(sliding){ //player sliding
 			maxFallingSpeed = slidingSpeed;
 		}
@@ -187,13 +194,13 @@ public class Player extends Movable {
 		}
 
 		if(jumping){ //start of jump
-            dy = jumpStart;
-            falling = true;
-            jumping = false;
+			dy = jumpStart;
+			falling = true;
+			jumping = false;
 		}
 
 		if(falling){ //mid jump or if falling down
-            checkSliding();
+			checkSliding();
 			dy += gravity;
 			if(dy > maxFallingSpeed){
 				dy = maxFallingSpeed;
@@ -261,7 +268,7 @@ public class Player extends Movable {
 			calculateCorners(x, y + 1.5);
 			if(!bottomLeftBool && !bottomRightBool){
 				falling = true;
-            }
+			}
 		}
 		x = tempX;
 		y = tempY;

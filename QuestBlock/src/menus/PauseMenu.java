@@ -1,7 +1,9 @@
 package menus;
 
 import gamestate.GameStateControl;
+import gamestate.LevelState;
 import gamestate.MenuState;
+import levels.LevelType;
 import tiles.Background;
 
 import java.awt.*;
@@ -43,12 +45,12 @@ public class PauseMenu extends MenuState {
                 gameStateControl.setGameState(gameStateControl.getPaused());
                 break;
             case restart:
-                int currentPausedInt = gameStateControl.getPaused();
-                gameStateControl.setPaused(0);
-                gameStateControl.setGameState(currentPausedInt);
+                LevelType currentPausedState = gameStateControl.getPaused();
+                gameStateControl.setPaused(LevelType.MAINMENU);
+                gameStateControl.setGameState(currentPausedState);
                 break;
             case mainmenu:
-                gameStateControl.setGameState(GameStateControl.MAINMENUSTATE);
+                gameStateControl.setGameState(LevelType.MAINMENU);
                 break;
         }
     }

@@ -13,7 +13,28 @@ public enum LevelType {
      */
     LEVEL2,
     /**
-     * Randomize
+     * Randomize level
      */
-    RANDOMIZER
+    RANDOMIZER,
+    /**
+     * Level select menu
+     */
+    LEVELSELECT,
+    /**
+     * Pause menu
+     */
+    PAUSE,
+    /**
+     * Main menu
+     */
+    MAINMENU,
+    /**
+     * Victory menu
+     */
+    VICTORY,
+    /**
+     * Death menu
+     */
+    DEATH
+
 }

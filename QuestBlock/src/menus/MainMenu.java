@@ -4,6 +4,7 @@ package menus;
 import game.GamePanel;
 import gamestate.GameStateControl;
 import gamestate.MenuState;
+import levels.LevelType;
 import tiles.Background;
 
 import java.awt.*;
@@ -90,8 +91,8 @@ public class MainMenu extends MenuState {
 
         switch (currentChoice){
             case START:
-                gameStateControl.setPaused(GameStateControl.MAINMENUSTATE);
-                gameStateControl.setGameState(GameStateControl.LEVELSELECT);
+                gameStateControl.setPaused(LevelType.MAINMENU);
+                gameStateControl.setGameState(LevelType.LEVELSELECT);
                 break;
             case HELP:
                 help = !help;

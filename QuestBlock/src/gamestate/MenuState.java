@@ -2,6 +2,7 @@ package gamestate;
 
 
 import game.GamePanel;
+import levels.LevelType;
 import tiles.Background;
 
 import java.awt.*;
@@ -82,7 +83,7 @@ public class MenuState implements GameState {
             select();
         }
         if (k == KeyEvent.VK_ESCAPE) {
-            if(gameStateControl.getPaused() != 0) {
+            if(gameStateControl.getPaused() != LevelType.MAINMENU) {
                 gameStateControl.setGameState(gameStateControl.getPaused());
             }
         }

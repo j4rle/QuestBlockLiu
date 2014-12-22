@@ -56,25 +56,25 @@ public class LoadLevel extends LevelState{
 
         switch (level){
             case RANDOMIZER:
-                if(gameStateControl.getPaused() != GameStateControl.RANDOMIZERSTATE) {
+                if(gameStateControl.getPaused() != LevelType.RANDOMIZER) {
                     initRandomizer();
                     break;
                 }
                 break;
             case LEVEL1:
-                if(this.gameStateControl.getPaused() != GameStateControl.LEVEL1STATE) {
+                if(this.gameStateControl.getPaused() != LevelType.LEVEL1) {
                     initLevel1();
                 }
                 break;
             case LEVEL2:
-                if(gameStateControl.getPaused() != GameStateControl.LEVEL2STATE) {
+                if(gameStateControl.getPaused() != LevelType.LEVEL2) {
                     initLevel2();
                 }
                 break;
         }
     }
 
-    private void addEntry(String combination){
+    private void addHighScoreEntry(String combination){
         String delimiter = ":";
         String name = combination.split(delimiter)[0];
         int score = Integer.parseInt(combination.split(delimiter)[1]);
@@ -110,7 +110,7 @@ public class LoadLevel extends LevelState{
             File file = new File(url.getFile());
             try(Scanner scanner = new Scanner(file)){
                 while(scanner.hasNext()){
-                    addEntry(scanner.next());
+                    addHighScoreEntry(scanner.next());
                 }
 
             }catch (IOException e){

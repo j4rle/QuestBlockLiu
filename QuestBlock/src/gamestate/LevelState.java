@@ -3,6 +3,7 @@ package gamestate;
 import entities.Player;
 import game.GamePanel;
 import game.HighScore;
+import levels.LevelType;
 import tiles.Background;
 import tiles.TileMap;
 
@@ -35,6 +36,7 @@ public class LevelState implements GameState{
     protected long finishTime = -1;
     protected String filename = "";
     protected boolean randomize = false;
+    protected boolean shouldRandomize = true;
 
     protected static final int TILE_SCALE = 12;
     protected int tileSize;
@@ -59,7 +61,7 @@ public class LevelState implements GameState{
         gameStateControl.addHighscore(playerScore);
 
         gameStateControl.setPaused(gameStateControl.getGameState());
-        gameStateControl.setGameState((GameStateControl.VICTORYSTATE));
+        gameStateControl.setGameState(LevelType.VICTORY);
 
 
         ClassLoader classloader = getClass().getClassLoader();
@@ -78,21 +80,30 @@ public class LevelState implements GameState{
     public void update() {
         player.update();
         tileMap.update();
-        if(randomize){
-            tileMap.randomize();
-        }
+
         if(tileMap.isVictory()){
             victoryActions();
         }
-        if(player.isDead()){
+        else if (player.isDead()) {
             gameStateControl.setPaused(gameStateControl.getGameState());
-            gameStateControl.setGameState((GameStateControl.DEATHSTATE));
+            gameStateControl.setGameState(LevelType.DEATH);
         }
+        else {
+            if (randomize) {
+                //randomize and update tile map
+                shouldRandomize = !shouldRandomize;
+                if(shouldRandomize){
+                    tileMap.randomize();
+                    player.updateMap(tileMap);
+                }
+            }
 
-        if(player.getX() < xmax || player.getX() > xmin){
-            tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));}
-        if(player.getY() > GamePanel.HEIGHT / 2 && player.getY() != 0) {
-            tileMap.setY((int) (GamePanel.HEIGHT / 2 - player.getY()));
+            if (player.getX() < xmax || player.getX() > xmin) {
+                tileMap.setX((int) (GamePanel.WIDTH / 2 - player.getX()));
+            }
+            if (player.getY() > GamePanel.HEIGHT / 2 && player.getY() != 0) {
+                tileMap.setY((int) (GamePanel.HEIGHT / 2 - player.getY()));
+            }
         }
     }
 
@@ -118,7 +129,7 @@ public class LevelState implements GameState{
         }
         if(key == KeyEvent.VK_ESCAPE){
             gameStateControl.setPaused(gameStateControl.getGameState()); //this allows us to "save" the current state of the game
-            gameStateControl.setGameState(GameStateControl.PAUSESTATE); //Pause screen
+            gameStateControl.setGameState(LevelType.PAUSE); //Pause screen
         }
     }
 

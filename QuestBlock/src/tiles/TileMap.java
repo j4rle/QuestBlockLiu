@@ -32,10 +32,11 @@ public class TileMap {
     private int victoryRow = 0;
     private int victoryCol = 0;
     private boolean victory = false;
+    private Random rnd;
 
     /**
      *
-     * @param s file path for tilemap
+     * @param s file path for tile map
      * @param tileSize size of the tiles in the level
      */
 	public TileMap(String s, int tileSize){
@@ -44,6 +45,7 @@ public class TileMap {
         this.map = null;
         initTileMap(s);
         initTiles();
+        rnd = new Random();
 
     }
 
@@ -61,8 +63,8 @@ public class TileMap {
             ymin = GamePanel.HEIGHT - height;
             ymax = 0;
 
-            map = new TileType[mapHeight][mapWidth]; //map represented as array
-            tiles = new Tile[mapHeight][mapWidth];
+            map = new TileType[mapHeight][mapWidth]; //map represented as 2d array
+            tiles = new Tile[mapHeight][mapWidth]; //tiles represented in 2d array
 
 
             String delimiter = " "; //separator for information in our file
@@ -119,13 +121,19 @@ public class TileMap {
     }
 
     public void randomize(){
-        Random rnd = new Random();
-        int rndCol = rnd.nextInt(mapWidth-2)+1;
-        int rndRow = rnd.nextInt(mapHeight-2)+1;
+        //choose a random row/column
+//        int rndRow = rnd.nextInt(mapHeight-2)+1;
+//        int rndCol = rnd.nextInt(mapWidth-2)+1;
+        int rndRow = 10;
+        int rndCol = 10;
 
+        //randomize tile
         TileType tileType = TileType.getRandom();
-        map[rndRow][rndCol] = tileType;
-        tiles[rndRow][rndCol] = new Tile(tileSize, rndCol * tileSize, y + rndRow * tileSize, tileType);
+        //insert tile
+        if(tileType != TileType.VICTORYTILE && tileType != TileType.OUTSIDE){
+            map[rndRow][rndCol] = tileType;
+            tiles[rndRow][rndCol] = new Tile(tileSize, rndCol * tileSize, y + rndRow * tileSize, tileType);
+        }
 
     }
 
