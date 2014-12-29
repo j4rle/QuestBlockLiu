@@ -87,20 +87,21 @@ public class Player extends Movable {
 	}
 
     public void checkSliding(){
+		final double SLIDE_PADDING = 3;
         if(!flying){
             if(dx > 0) {
-                calculateCorners(x + 3, y);
+                calculateCorners(x + SLIDE_PADDING, y);
                 sliding = (topRightBool || topLeftBool || bottomRightBool || bottomLeftBool);
             }
             else if(dx < 0) {
-                calculateCorners(x - 3, y);
+                calculateCorners(x - SLIDE_PADDING, y);
                 sliding = (topRightBool || topLeftBool || bottomRightBool || bottomLeftBool);
             }
             else {
-                calculateCorners(x + 3, y);
+                calculateCorners(x + SLIDE_PADDING, y);
                 sliding = (topRightBool || topLeftBool);
                 if(!sliding){
-                    calculateCorners(x - 3, y);
+                    calculateCorners(x - SLIDE_PADDING, y);
                     sliding = (topRightBool || topLeftBool);
                 }
             }
@@ -143,9 +144,7 @@ public class Player extends Movable {
 
 	}
 
-	//extensive check of player position/actions/colliding
-	public void update(){
-
+	private void updatePlayerPosition(){
 		if(drowningCounter > drowningTimer){ //player has drowned
 			dead = true;
 		}
@@ -154,15 +153,16 @@ public class Player extends Movable {
 			maxSpeed = 10;
 			moveSpeed = 0.6;
 		}
-		if(!sprinting){ //player not sprinting
+		else{ //player not sprinting
 			maxSpeed = 5.1;
 			moveSpeed = 0.5;
 		}
-		if(!sliding){ //player not sliding
-			maxFallingSpeed = 100;
-		}
+
 		if(sliding){ //player sliding
 			maxFallingSpeed = slidingSpeed;
+		}
+		else{//player not sliding
+			maxFallingSpeed = 100;
 		}
 
 		//calculate next position
@@ -171,8 +171,8 @@ public class Player extends Movable {
 			if(dx < -maxSpeed){
 				dx = -maxSpeed; //stops player acceleration if maxSpeed is reached
 			}
-		} //accelerates/moves right
-		else if(right){
+		}
+		else if(right){ //accelerates/moves right
 			dx += moveSpeed;
 			if(dx > maxSpeed){
 				dx = maxSpeed; //stops player acceleration if maxSpeed is reached
@@ -199,7 +199,7 @@ public class Player extends Movable {
 			jumping = false;
 		}
 
-		if(falling){ //mid jump or if falling down
+		else if(falling){ //mid jump or if falling down
 			checkSliding();
 			dy += gravity;
 			if(dy > maxFallingSpeed){
@@ -209,8 +209,9 @@ public class Player extends Movable {
 		else{ //standing still
 			dy = 0;
 		}
+	}
 
-
+	private void handleCollisions(){
 		//collision detection
 
 		int currentColumn = tileMap.getColTile((int)x);
@@ -272,8 +273,12 @@ public class Player extends Movable {
 		}
 		x = tempX;
 		y = tempY;
+	}
 
-
+	//update player movement and handle collisions
+	public void update(){
+		updatePlayerPosition();
+		handleCollisions();
 	}
 
 	public void draw(Graphics2D g){

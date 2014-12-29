@@ -33,7 +33,7 @@ public class GameStateControl {
 
         //levels
         gameStates.put(LevelType.LEVEL1, new LoadLevel(this, LevelType.LEVEL1)); //level 1
-        gameStates.put(LevelType.LEVEL1, new LoadLevel(this, LevelType.LEVEL2)); //level 2
+        gameStates.put(LevelType.LEVEL2, new LoadLevel(this, LevelType.LEVEL2)); //level 2
         gameStates.put(LevelType.RANDOMIZER, new LoadLevel(this, LevelType.RANDOMIZER)); //randomize-level
 
         //victory screen
@@ -109,7 +109,7 @@ public class GameStateControl {
 		gameStates.get(currentState).keyPressed(key);
 	}
 	public void keyReleased(int key){
-		gameStates.get(currentState).keyReleased(key);
+        gameStates.get(currentState).keyReleased(key);
 	}
 
 }

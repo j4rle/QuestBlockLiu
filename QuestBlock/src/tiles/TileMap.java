@@ -122,17 +122,15 @@ public class TileMap {
 
     public void randomize(){
         //choose a random row/column
-//        int rndRow = rnd.nextInt(mapHeight-2)+1;
-//        int rndCol = rnd.nextInt(mapWidth-2)+1;
-        int rndRow = 10;
-        int rndCol = 10;
+        int rndRow = rnd.nextInt(mapHeight-2)+1;
+        int rndCol = rnd.nextInt(mapWidth-2)+1;
 
         //randomize tile
         TileType tileType = TileType.getRandom();
         //insert tile
         if(tileType != TileType.VICTORYTILE && tileType != TileType.OUTSIDE){
             map[rndRow][rndCol] = tileType;
-            tiles[rndRow][rndCol] = new Tile(tileSize, rndCol * tileSize, y + rndRow * tileSize, tileType);
+            tiles[rndRow][rndCol] = new Tile(tileSize, rndCol * tileSize, rndRow * tileSize, tileType);
         }
 
     }

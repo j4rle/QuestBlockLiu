@@ -15,7 +15,9 @@ public class GameEngine extends KeyAdapter {
     private GameStateControl gameStateControl;
     private GamePanel gamePanel;
 
-    protected static final int LOGIC_DELAY_IN_MS = 15;
+    protected static final int LOGIC_DELAY_IN_MS = 16;
+    protected static final int DRAW_DELAY_IN_MS = 16;
+
 
     /**
      * Game engine for the game. Writes to a panel at a frequent rate
@@ -41,7 +43,7 @@ public class GameEngine extends KeyAdapter {
     public void init(){
 
 
-        if(false){
+        if(false){ //set to false to avoid "enter name"-prompt
             try(Scanner reader = new Scanner(System.in)){
                 System.out.println("Enter your name:");
                 String playerName = reader.next();
@@ -50,19 +52,25 @@ public class GameEngine extends KeyAdapter {
         }
 
 
+        final Action doOneDraw = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                render();
+                gamePanel.draw();
+            }
+        };
         final Action doOneLogic = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 update();
-                render();
-                gamePanel.draw();
             }
         };
 
 
         Timer gameLogicTimer = new Timer(LOGIC_DELAY_IN_MS, doOneLogic);
+        Timer gameUpdateTimer = new Timer(DRAW_DELAY_IN_MS, doOneDraw);
 
         gameLogicTimer.start();
+        gameUpdateTimer.start();
     }
 
     private void update(){
